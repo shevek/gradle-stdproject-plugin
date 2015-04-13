@@ -1,0 +1,33 @@
+buildscript {
+    apply from: file('gradle/buildscript.gradle'), to: buildscript 
+}
+
+task buildscriptDependencies << {
+	project.buildscript.configurations.getByName('classpath').each { println it.name }
+}
+
+ext.githubProjectName = rootProject.name
+group = "org.anarres.gradle"
+
+apply from: file('gradle/convention.gradle')
+apply from: file('gradle/github.gradle')
+apply from: file('gradle/nexus.gradle')
+apply from: file('gradle/check.gradle')
+apply from: file('gradle/license.gradle')
+apply from: file('gradle/plugin.gradle')
+
+dependencies {
+	compile gradleApi()
+	compile 'nl.javadude.gradle.plugins:license-gradle-plugin:0.10.0'
+	// compile 'com.mapvine:gradle-cobertura-plugin:0.1'
+	compile 'net.saliman:gradle-cobertura-plugin:2.2.5'
+	// compile 'gradle-release:gradle-release:1.1.5'
+	compile 'org.ajoberstar:gradle-git:1.0.0'
+	// compile 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.5'
+	compile('com.netflix.nebula:gradle-info-plugin:2.2.0') {
+		exclude group: 'com.perforce'
+	}
+	compile 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+	compile 'be.insaneprogramming.gradle:animalsniffer-gradle-plugin:1.4.0'
+	compile 'com.github.ben-manes:gradle-versions-plugin:0.8'
+}
