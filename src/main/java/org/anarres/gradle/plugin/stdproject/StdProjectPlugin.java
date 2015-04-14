@@ -10,6 +10,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.ProjectReportsPlugin;
 import org.gradle.api.plugins.announce.BuildAnnouncementsPlugin;
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin;
@@ -91,6 +92,13 @@ public class StdProjectPlugin implements Plugin<Project> {
         }
     }
 
+    private static Object getExtraPropertyOrNull(@Nonnull Project project, @Nonnull String name) {
+        ExtraPropertiesExtension properties = project.getExtensions().getExtraProperties();
+        if (properties.has(name))
+            return properties.get(name);
+        return null;
+    }
+
     @Override
     public void apply(final Project project) {
         final StdProjectExtension extension = project.getExtensions().create("stdproject", StdProjectExtension.class);
@@ -104,11 +112,13 @@ public class StdProjectPlugin implements Plugin<Project> {
         wrapper.setGradleVersion("2.2.1");
 
         // Github
-        String githubProjectName = (String) project.getExtensions().getExtraProperties().get("githubProjectName");
+        project.getPlugins().apply(GithubPagesPlugin.class);
+
+        String githubProjectName = (String) getExtraPropertyOrNull(project, "githubProjectName");
         if (githubProjectName == null)
             githubProjectName = project.getName();
 
-        String githubUserName = (String) project.getExtensions().getExtraProperties().get("githubUserName");
+        String githubUserName = (String) getExtraPropertyOrNull(project, "githubUserName");
         if (githubUserName == null)
             githubUserName = System.getProperty("user.name");
 
@@ -119,10 +129,18 @@ public class StdProjectPlugin implements Plugin<Project> {
         project.getPlugins().apply(GithubPagesPlugin.class);
         for (Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
 
+            project.getLogger().info("Aggregating " + docTaskClass.getSimpleName() + " for " + project);
+
             FileCollection sources = project.files();
-            for (Project subproject : project.getAllprojects())
-                for (SourceTask docTask : subproject.getTasks().withType(docTaskClass))
+            for (Project subproject : project.getAllprojects()) {
+                project.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
+                for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
+                    project.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
                     sources = sources.plus(docTask.getSource());
+                }
+            }
+
+            project.getLogger().info("Sources are " + sources);
 
             if (sources.isEmpty())
                 continue;
@@ -138,12 +156,12 @@ public class StdProjectPlugin implements Plugin<Project> {
                         @Override
                         public void execute(Task t) {
                             // TODO: t.setProperty("classpath", null);
-                            if (t.hasProperty("options")) {
-                                StandardJavadocDocletOptions options = (StandardJavadocDocletOptions) t.property("options");
-                            }
                         }
                     });
-                    githubPages.getPages().from(t.getOutputs().getFiles()).into("docs/" + shortName);
+                    if (t instanceof Javadoc)
+                        StdModulePlugin.configureJavadoc(project, (Javadoc) t);
+                    // githubPages.getPages().from(t.getOutputs().getFiles()).into("docs/" + shortName);
+                    githubPages.getPages().from(t).into("docs/" + shortName);
                 }
             });
 
