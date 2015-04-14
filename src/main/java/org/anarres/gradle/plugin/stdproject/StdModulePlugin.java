@@ -15,6 +15,7 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.plugins.JavaPlugin;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.quality.FindBugsExtension;
 import org.gradle.api.plugins.quality.FindBugsPlugin;
 import org.gradle.api.tasks.javadoc.Javadoc;
@@ -53,6 +54,9 @@ public class StdModulePlugin implements Plugin<Project> {
         project.getPlugins().apply(JavaPlugin.class);
         project.getPlugins().apply(InfoPlugin.class);
         project.getPlugins().apply(VersionsPlugin.class);
+
+        JavaPluginConvention java = project.getConvention().getPlugin(JavaPluginConvention.class);
+        java.setSourceCompatibility(JavaVersion.VERSION_1_7);
 
         project.getRepositories().add(project.getRepositories().mavenCentral());
         project.getRepositories().add(project.getRepositories().jcenter());

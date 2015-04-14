@@ -1,8 +1,13 @@
 package org.anarres.gradle.plugin.stdproject;
 
+import groovy.lang.Closure;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
+import nl.javadude.gradle.plugins.license.LicenseExtension;
+import nl.javadude.gradle.plugins.license.LicensePlugin;
 import org.ajoberstar.gradle.git.ghpages.GithubPagesPlugin;
 import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension;
 import org.gradle.api.Action;
@@ -10,16 +15,19 @@ import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.FileTree;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
+import org.gradle.api.plugins.JavaPlugin;
+import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.ProjectReportsPlugin;
 import org.gradle.api.plugins.announce.BuildAnnouncementsPlugin;
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin;
+import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.javadoc.Groovydoc;
 import org.gradle.api.tasks.javadoc.Javadoc;
 import org.gradle.api.tasks.scala.ScalaDoc;
 import org.gradle.api.tasks.wrapper.Wrapper;
-import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 
 /**
  * The standard project plugin.
@@ -127,34 +135,29 @@ public class StdProjectPlugin implements Plugin<Project> {
 
         // Github - aggregate documentation
         project.getPlugins().apply(GithubPagesPlugin.class);
-        for (Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
+        for (final Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
 
             project.getLogger().info("Aggregating " + docTaskClass.getSimpleName() + " for " + project);
 
-            FileCollection sources = project.files();
-            for (Project subproject : project.getAllprojects()) {
-                project.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
-                for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
-                    project.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
-                    sources = sources.plus(docTask.getSource());
-                }
-            }
-
-            project.getLogger().info("Sources are " + sources);
-
-            if (sources.isEmpty())
-                continue;
-
+            /* We're still in stdproject - no modules have been configured yet.
+             EXISTS:
+             {
+             // Ensure at least one task of the type exists.
+             for (Project subproject : project.getAllprojects())
+             for (SourceTask docTask : subproject.getTasks().withType(docTaskClass))
+             break EXISTS;
+             continue;
+             }
+             */
             final String shortName = docTaskClass.getSimpleName().toLowerCase();
-            final FileCollection _sources = sources;
-            project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
+            final SourceTask task = project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
                 @Override
                 public void execute(final SourceTask t) {
-                    t.source(_sources);
                     t.setProperty("destinationDir", new File(project.getBuildDir(), "docs/" + shortName));
                     t.doFirst(new Action<Task>() {
                         @Override
-                        public void execute(Task t) {
+                        public void execute(Task _t) {
+                            // TODO: t.source(...);
                             // TODO: t.setProperty("classpath", null);
                         }
                     });
@@ -165,6 +168,50 @@ public class StdProjectPlugin implements Plugin<Project> {
                 }
             });
 
+            task.conventionMapping("source", new Callable<FileTree>() {
+                @Override
+                public FileTree call() throws Exception {
+                    FileCollection sources = project.files();
+                    for (Project subproject : project.getAllprojects()) {
+                        task.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
+                        for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
+                            if (docTask == task)
+                                continue;   // We exist now; skip ourselves or we recurse into this convention.
+                            task.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
+                            sources = sources.plus(docTask.getSource());
+                        }
+                    }
+
+                    task.getLogger().info("Sources are " + sources);
+
+                    return sources.getAsFileTree();
+                }
+            });
+
+            task.conventionMapping("classpath", new Callable<FileCollection>() {
+                @Override
+                public FileCollection call() throws Exception {
+                    FileCollection classpath = project.files();
+                    for (Project subproject : project.getAllprojects()) {
+                        if (!subproject.getPlugins().hasPlugin(JavaPlugin.class))
+                            continue;
+                        SourceSetContainer sourceSets = subproject.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
+                        classpath = classpath.plus(sourceSets.getByName("main").getCompileClasspath());
+                    }
+                    return classpath;
+                }
+            });
+
+        }
+
+        // License
+        for (Project subproject : project.getAllprojects()) {
+            subproject.getPlugins().apply(LicensePlugin.class);
+            LicenseExtension license = subproject.getExtensions().getByType(LicenseExtension.class);
+            license.setHeader(project.file("codequality/HEADER"));
+            // license.ext.year = Calendar.getInstance().get(Calendar.YEAR);
+            license.setSkipExistingHeaders(true);
+            license.setIgnoreFailures(true);
         }
 
     }
