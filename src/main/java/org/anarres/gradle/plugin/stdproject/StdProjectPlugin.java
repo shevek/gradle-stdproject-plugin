@@ -34,74 +34,75 @@ import org.gradle.api.tasks.wrapper.Wrapper;
  */
 public class StdProjectPlugin implements Plugin<Project> {
 
-    private static interface DocTaskHandler<T extends SourceTask> {
+    /*
+     private static interface DocTaskHandler<T extends SourceTask> {
 
-        @Nonnull
-        public Class<T> getDocTaskClass();
+     @Nonnull
+     public Class<T> getDocTaskClass();
 
-        public void setClassPath(@Nonnull T task, @Nonnull FileCollection classpath);
+     public void setClassPath(@Nonnull T task, @Nonnull FileCollection classpath);
 
-        public void setDestinationDir(@Nonnull T task, @Nonnull File dir);
-    }
+     public void setDestinationDir(@Nonnull T task, @Nonnull File dir);
+     }
 
-    private static class JavadocTaskHandler implements DocTaskHandler<Javadoc> {
+     private static class JavadocTaskHandler implements DocTaskHandler<Javadoc> {
 
-        @Override
-        public Class<Javadoc> getDocTaskClass() {
-            return Javadoc.class;
-        }
+     @Override
+     public Class<Javadoc> getDocTaskClass() {
+     return Javadoc.class;
+     }
 
-        @Override
-        public void setClassPath(Javadoc task, FileCollection classpath) {
-            task.setClasspath(classpath);
-        }
+     @Override
+     public void setClassPath(Javadoc task, FileCollection classpath) {
+     task.setClasspath(classpath);
+     }
 
-        @Override
-        public void setDestinationDir(Javadoc task, File dir) {
-            task.setDestinationDir(dir);
-        }
-    }
+     @Override
+     public void setDestinationDir(Javadoc task, File dir) {
+     task.setDestinationDir(dir);
+     }
+     }
 
-    private static class ScaladocTaskHandler implements DocTaskHandler<ScalaDoc> {
+     private static class ScaladocTaskHandler implements DocTaskHandler<ScalaDoc> {
 
-        @Override
-        public Class<ScalaDoc> getDocTaskClass() {
-            return ScalaDoc.class;
-        }
+     @Override
+     public Class<ScalaDoc> getDocTaskClass() {
+     return ScalaDoc.class;
+     }
 
-        @Override
-        public void setClassPath(ScalaDoc task, FileCollection classpath) {
-            task.setClasspath(classpath);
-        }
+     @Override
+     public void setClassPath(ScalaDoc task, FileCollection classpath) {
+     task.setClasspath(classpath);
+     }
 
-        @Override
-        public void setDestinationDir(ScalaDoc task, File dir) {
-            task.setDestinationDir(dir);
-        }
-    }
+     @Override
+     public void setDestinationDir(ScalaDoc task, File dir) {
+     task.setDestinationDir(dir);
+     }
+     }
 
-    private static class GroovydocTaskHandler implements DocTaskHandler<Groovydoc> {
+     private static class GroovydocTaskHandler implements DocTaskHandler<Groovydoc> {
 
-        @Override
-        public Class<Groovydoc> getDocTaskClass() {
-            return Groovydoc.class;
-        }
+     @Override
+     public Class<Groovydoc> getDocTaskClass() {
+     return Groovydoc.class;
+     }
 
-        @Override
-        public void setClassPath(Groovydoc task, FileCollection classpath) {
-            task.setClasspath(classpath);
-        }
+     @Override
+     public void setClassPath(Groovydoc task, FileCollection classpath) {
+     task.setClasspath(classpath);
+     }
 
-        @Override
-        public void setDestinationDir(Groovydoc task, File dir) {
-            task.setDestinationDir(dir);
-        }
-    }
-
-    private static Object getExtraPropertyOrNull(@Nonnull Project project, @Nonnull String name) {
+     @Override
+     public void setDestinationDir(Groovydoc task, File dir) {
+     task.setDestinationDir(dir);
+     }
+     }
+     */
+    public static <T> T getExtraPropertyOrNull(@Nonnull Project project, @Nonnull String name) {
         ExtraPropertiesExtension properties = project.getExtensions().getExtraProperties();
         if (properties.has(name))
-            return properties.get(name);
+            return (T) properties.get(name);
         return null;
     }
 
@@ -120,11 +121,11 @@ public class StdProjectPlugin implements Plugin<Project> {
         // Github
         project.getPlugins().apply(GithubPagesPlugin.class);
 
-        String githubProjectName = (String) getExtraPropertyOrNull(project, "githubProjectName");
+        String githubProjectName = getExtraPropertyOrNull(project, "githubProjectName");
         if (githubProjectName == null)
             githubProjectName = project.getName();
 
-        String githubUserName = (String) getExtraPropertyOrNull(project, "githubUserName");
+        String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
         if (githubUserName == null)
             githubUserName = System.getProperty("user.name");
 
