@@ -3,6 +3,7 @@ package org.anarres.gradle.plugin.stdproject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.Nonnull;
 
 /**
  * The standard project plugin extension.
@@ -24,5 +25,9 @@ public class StdProjectExtension {
                     "http://docs.guava-libraries.googlecode.com/git/javadoc/"));
         }
     };
+
+    public void javadocLink(@Nonnull String uri) {
+        javadocLinks.add(uri);
+    }
 
 }

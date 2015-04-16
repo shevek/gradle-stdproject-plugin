@@ -106,6 +106,30 @@ public class StdProjectPlugin implements Plugin<Project> {
         return null;
     }
 
+    /**
+     * Returns a string of the form githubUserName/githubProjectName.
+     *
+     * Uses project.githubUserName and project.githubProjectName properties.
+     * Falls back to project.getName() and System.getProperty("user.name").
+     *
+     * @param project The project to inspect. The root project is used.
+     * @return a string of the form githubUserName/githubProjectName.
+     */
+    @Nonnull
+    public static String getGithubPath(@Nonnull Project project) {
+        project = project.getRootProject();
+
+        String githubProjectName = getExtraPropertyOrNull(project, "githubProjectName");
+        if (githubProjectName == null)
+            githubProjectName = project.getName();
+
+        String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
+        if (githubUserName == null)
+            githubUserName = System.getProperty("user.name");
+
+        return githubUserName + "/" + githubProjectName;
+    }
+
     @Override
     public void apply(final Project project) {
         final StdProjectExtension extension = project.getExtensions().create("stdproject", StdProjectExtension.class);
@@ -121,16 +145,8 @@ public class StdProjectPlugin implements Plugin<Project> {
         // Github
         project.getPlugins().apply(GithubPagesPlugin.class);
 
-        String githubProjectName = getExtraPropertyOrNull(project, "githubProjectName");
-        if (githubProjectName == null)
-            githubProjectName = project.getName();
-
-        String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
-        if (githubUserName == null)
-            githubUserName = System.getProperty("user.name");
-
         final GithubPagesPluginExtension githubPages = project.getExtensions().getByType(GithubPagesPluginExtension.class);
-        githubPages.setRepoUri("git@github.com:" + githubUserName + "/" + githubProjectName + ".git");
+        githubPages.setRepoUri("git@github.com:" + getGithubPath(project) + ".git");
 
         // Github - aggregate documentation
         for (final Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
@@ -148,7 +164,7 @@ public class StdProjectPlugin implements Plugin<Project> {
              }
              */
             final String shortName = docTaskClass.getSimpleName().toLowerCase();
-            final SourceTask task = project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
+            project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
                 @Override
                 public void execute(final SourceTask t) {
                     t.setProperty("destinationDir", new File(project.getBuildDir(), "docs/" + shortName));
@@ -163,40 +179,41 @@ public class StdProjectPlugin implements Plugin<Project> {
                         StdModulePlugin.configureJavadoc(project, (Javadoc) t);
                     // githubPages.getPages().from(t.getOutputs().getFiles()).into("docs/" + shortName);
                     githubPages.getPages().from(t).into("docs/" + shortName);
-                }
-            });
 
-            task.conventionMapping("source", new Callable<FileTree>() {
-                @Override
-                public FileTree call() throws Exception {
-                    FileCollection sources = project.files();
-                    for (Project subproject : project.getAllprojects()) {
-                        task.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
-                        for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
-                            if (docTask == task)
-                                continue;   // We exist now; skip ourselves or we recurse into this convention.
-                            task.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
-                            sources = sources.plus(docTask.getSource());
+                    t.conventionMapping("source", new Callable<FileTree>() {
+                        @Override
+                        public FileTree call() throws Exception {
+                            FileCollection sources = project.files();
+                            for (Project subproject : project.getAllprojects()) {
+                                t.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
+                                for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
+                                    if (docTask == t)
+                                        continue;   // We exist now; skip ourselves or we recurse into this convention.
+                                    t.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
+                                    sources = sources.plus(docTask.getSource());
+                                }
+                            }
+
+                            t.getLogger().info("Sources are " + sources);
+
+                            return sources.getAsFileTree();
                         }
-                    }
+                    });
 
-                    task.getLogger().info("Sources are " + sources);
+                    t.conventionMapping("classpath", new Callable<FileCollection>() {
+                        @Override
+                        public FileCollection call() throws Exception {
+                            FileCollection classpath = project.files();
+                            for (Project subproject : project.getAllprojects()) {
+                                if (!subproject.getPlugins().hasPlugin(JavaPlugin.class))
+                                    continue;
+                                SourceSetContainer sourceSets = subproject.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
+                                classpath = classpath.plus(sourceSets.getByName("main").getCompileClasspath());
+                            }
+                            return classpath;
+                        }
+                    });
 
-                    return sources.getAsFileTree();
-                }
-            });
-
-            task.conventionMapping("classpath", new Callable<FileCollection>() {
-                @Override
-                public FileCollection call() throws Exception {
-                    FileCollection classpath = project.files();
-                    for (Project subproject : project.getAllprojects()) {
-                        if (!subproject.getPlugins().hasPlugin(JavaPlugin.class))
-                            continue;
-                        SourceSetContainer sourceSets = subproject.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
-                        classpath = classpath.plus(sourceSets.getByName("main").getCompileClasspath());
-                    }
-                    return classpath;
                 }
             });
 
