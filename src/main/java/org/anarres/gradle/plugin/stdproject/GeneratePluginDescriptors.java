@@ -5,6 +5,7 @@
  */
 package org.anarres.gradle.plugin.stdproject;
 
+import com.google.common.base.Preconditions;
 import java.io.File;
 import java.util.Map;
 import javax.annotation.Nonnull;
@@ -45,7 +46,7 @@ public class GeneratePluginDescriptors extends ConventionTask {
     public void generate() throws Exception {
         final File destinationDir = getDestinationDir();
         DefaultGroovyMethods.deleteDir(destinationDir);
-        for (Map.Entry<String, ? extends Object> e : pluginImplementations.entrySet()) {
+        for (Map.Entry<String, ? extends Object> e : getPluginImplementations().entrySet()) {
             File pluginDescriptorFile = new File(destinationDir, "META-INF/gradle-plugins/" + e.getKey() + ".properties");
             pluginDescriptorFile.getParentFile().mkdirs();
             DefaultGroovyMethods.setText(pluginDescriptorFile,
