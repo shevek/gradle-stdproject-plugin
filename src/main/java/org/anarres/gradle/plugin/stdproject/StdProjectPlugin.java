@@ -1,9 +1,7 @@
 package org.anarres.gradle.plugin.stdproject;
 
-import groovy.lang.Closure;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import nl.javadude.gradle.plugins.license.LicenseExtension;
@@ -134,7 +132,6 @@ public class StdProjectPlugin implements Plugin<Project> {
         githubPages.setRepoUri("git@github.com:" + githubUserName + "/" + githubProjectName + ".git");
 
         // Github - aggregate documentation
-        project.getPlugins().apply(GithubPagesPlugin.class);
         for (final Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
 
             project.getLogger().info("Aggregating " + docTaskClass.getSimpleName() + " for " + project);
