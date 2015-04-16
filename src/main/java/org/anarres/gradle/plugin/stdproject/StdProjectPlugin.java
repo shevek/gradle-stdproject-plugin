@@ -2,6 +2,8 @@ package org.anarres.gradle.plugin.stdproject;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import nl.javadude.gradle.plugins.license.LicenseExtension;
@@ -12,8 +14,10 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
+import org.gradle.api.initialization.dsl.ScriptHandler;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
@@ -229,6 +233,23 @@ public class StdProjectPlugin implements Plugin<Project> {
             license.setIgnoreFailures(true);
         }
 
+        // Misc
+        project.getTasks().create("buildDependencies", new Action<Task>() {
+            @Override
+            public void execute(Task t) {
+                t.doLast(new Action<Task>() {
+                    @Override
+                    public void execute(Task t) {
+                        SortedSet<String> dependencies = new TreeSet<String>();
+                        ConfigurationContainer container = project.getBuildscript().getConfigurations();
+                        for (File file : container.getByName(ScriptHandler.CLASSPATH_CONFIGURATION))
+                            dependencies.add(file.getName());
+                        for (String dependency : dependencies)
+                            System.out.println(dependency);
+                    }
+                });
+            }
+        });
     }
 
 }
