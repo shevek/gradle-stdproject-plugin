@@ -152,32 +152,48 @@ public class StdModulePlugin implements Plugin<Project> {
                          q.add(new ClassLoaderQuery("self", getClass().getClassLoader()));
                          t.getLogger().info(String.valueOf(q.call()));
                          */
-
                         // developers is a List<Developer> and licenses is a List<License>
                         // so they need special treatment.
                         pom.project(new Closure(StdModulePlugin.this) {
                             @Override
                             public Object call(Object... args) {
                                 final Object pom = getDelegate();  // It's a CustomModelBuilder extends ModelBuilder extends FactoryBuilderSupport
-                                DefaultGroovyMethods.invokeMethod(pom, "developers", new Closure(StdModulePlugin.this) {
+
+                                DefaultGroovyMethods.invokeMethod(pom, "licenses", new Closure(StdModulePlugin.this) {
+                                    // This delegates to the same ModelBuilder, with an internal state
+                                    // change to represent that we're now in the developers{} block.
+                                    // LOG.debug("Developers delegate is {}", getDelegate());
                                     @Override
                                     public Object call(Object... args) {
-                                        // This delegates to the same ModelBuilder, with an internal state
-                                        // change to represent that we're now in the developers{} block.
-                                        // LOG.debug("Developers delegate is {}", getDelegate());
-                                        for (StdModuleExtension.Person person : extension.projectAuthors) {
-                                            Object developer = DefaultGroovyMethods.invokeMethod(pom, "developer", null);
+                                        for (License license : extension.licenses) {
+                                            Object target = DefaultGroovyMethods.invokeMethod(pom, "license", null);
                                             ConfigureUtil.configureByMap(ImmutableMap.<String, Object>of(
-                                                    "id", person.id,
-                                                    "name", person.name,
-                                                    "email", person.email
-                                            ), developer);
-                                            if (LOG.isDebugEnabled())
-                                                LOG.debug("Developer value is {} with props {}", developer, DefaultGroovyMethods.getProperties(developer));
+                                                    "name", license.getName(),
+                                                    "url", license.getUri(),
+                                                    "distribution", "repo"
+                                            ), target);
                                         }
                                         return null;
                                     }
                                 });
+
+                                DefaultGroovyMethods.invokeMethod(pom, "developers", new Closure(StdModulePlugin.this) {
+                                    @Override
+                                    public Object call(Object... args) {
+                                        for (StdModuleExtension.Person person : extension.authors) {
+                                            Object target = DefaultGroovyMethods.invokeMethod(pom, "developer", null);
+                                            ConfigureUtil.configureByMap(ImmutableMap.<String, Object>of(
+                                                    "id", person.id,
+                                                    "name", person.name,
+                                                    "email", person.email
+                                            ), target);
+                                            if (LOG.isDebugEnabled())
+                                                LOG.debug("Developer value is {} with props {}", target, DefaultGroovyMethods.getProperties(target));
+                                        }
+                                        return null;
+                                    }
+                                });
+
                                 return null;
                             }
                         });
@@ -185,17 +201,17 @@ public class StdModulePlugin implements Plugin<Project> {
                         // Everything else is simple, and we can do this:
                         Map<String, Object> pomData = new HashMap<String, Object>();
                         pomData.put("name", project.getName());
-                        pomData.put("description", extension.projectDescription);
-                        pomData.put("url", extension.projectUrl);
-                        pomData.put("inceptionYear", extension.projectInceptionYear);
+                        pomData.put("description", extension.description);
+                        pomData.put("url", extension.url);
+                        pomData.put("inceptionYear", extension.inceptionYear);
                         pomData.put("scm", ImmutableMap.<String, Object>of(
-                                "connection", extension.projectVcsUrl,
-                                "url", extension.projectVcsUrl,
-                                "developerConnection", extension.projectVcsUrl
+                                "connection", extension.vcsUrl,
+                                "url", extension.vcsUrl,
+                                "developerConnection", extension.vcsUrl
                         ));
                         pomData.put("issueManagement", ImmutableMap.<String, Object>of(
-                                "system", "github",
-                                "url", extension.projectIssuesUrl
+                                "system", extension.issuesSystem,
+                                "url", extension.issuesUrl
                         ));
                         t.getLogger().info("Configuring " + pom + " with " + pomData);
                         ConfigureUtil.configureByMap(pomData, pom.getModel());

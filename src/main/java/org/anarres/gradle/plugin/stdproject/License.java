@@ -14,11 +14,11 @@ import javax.annotation.Nonnull;
  *
  * @author shevek
  */
-public class StandardLicense {
+public class License {
 
-    public static final Map<String, StandardLicense> LICENSES = new HashMap<String, StandardLicense>() {
-        private void add(String name, String title, String url) {
-            put(name, new StandardLicense(name, title, URI.create(url)));
+    public static final Map<String, License> LICENSES = new HashMap<String, License>() {
+        private void add(@Nonnull String name, @Nonnull String title, @Nonnull String url) {
+            put(name, new License(name, title, URI.create(url)));
         }
 
         {
@@ -31,29 +31,45 @@ public class StandardLicense {
             add("MIT", "MIT License", "http://opensource.org/licenses/MIT");
         }
     };
-    private final String name;
-    private final String description;
-    private final URI uri;
+    private String name;
+    private String description;
+    private URI uri;
 
-    public StandardLicense(@Nonnull String name, @Nonnull String description, @Nonnull URI uri) {
+    public License() {
+    }
+
+    public License(@Nonnull String name, @Nonnull String description, @Nonnull URI uri) {
         this.name = name;
         this.description = description;
         this.uri = uri;
     }
 
-    @Nonnull
     public String getName() {
         return name;
     }
 
-    @Nonnull
+    public void setName(@Nonnull String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    @Nonnull
+    public void setDescription(@Nonnull String description) {
+        this.description = description;
+    }
+
     public URI getUri() {
         return uri;
+    }
+
+    public void setUri(@Nonnull URI uri) {
+        this.uri = uri;
+    }
+
+    public void setUri(@Nonnull String uri) {
+        setUri(URI.create(uri));
     }
 
 }

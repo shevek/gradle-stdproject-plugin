@@ -18,15 +18,15 @@ import org.gradle.api.Project;
  */
 public class StdPluginExtension extends GroovyObjectSupport {
 
-    public String pluginName;
-    public String pluginDescription;
+    // public String pluginName;
+    // public String pluginDescription;
     public Map<String, String> pluginImplementations = new HashMap<String, String>();
-    public final Set<String> pluginLicenses = new LinkedHashSet<String>();
+    // public final Set<String> pluginLicenses = new LinkedHashSet<String>();
     public final Set<String> pluginTags = new LinkedHashSet<String>();
 
     public StdPluginExtension(@Nonnull Project project) {
-        pluginName = project.getName();
-        pluginLicenses.add("Apache-2.0");
+        // pluginName = project.getName();
+        // pluginLicenses.add("Apache-2.0");
     }
 
     public void pluginImplementation(@Nonnull String id, @Nonnull String implementationClass) {

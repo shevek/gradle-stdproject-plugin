@@ -52,31 +52,43 @@ public class StdModuleExtension extends GroovyObjectSupport {
         }
     }
 
-    public static class License extends GroovyObjectSupport {
-    }
-
-    public String projectDescription;
-    public final String projectUrl;
-    public final String projectIssuesUrl;
-    public final String projectVcsUrl;
-    public String projectInceptionYear;
-    public List<Person> projectAuthors = new ArrayList<Person>();
+    public String description;
+    public final String url;
+    public final String issuesSystem = "github";
+    public final String issuesUrl;
+    public final String vcsUrl;
+    public String inceptionYear;
+    public List<Person> authors = new ArrayList<Person>();
+    public List<License> licenses = new ArrayList<License>();
 
     public StdModuleExtension(@Nonnull Project project) {
         String githubPath = StdProjectPlugin.getGithubPath(project);
-        projectUrl = GITHUB_URL_PREFIX + githubPath;
-        projectIssuesUrl = GITHUB_URL_PREFIX + githubPath + "/issues";
-        projectVcsUrl = "scm:git:git@github.com:" + githubPath + ".git";
+        url = GITHUB_URL_PREFIX + githubPath;
+        issuesUrl = GITHUB_URL_PREFIX + githubPath + "/issues";
+        vcsUrl = "scm:git:git@github.com:" + githubPath + ".git";
     }
 
-    public void projectDescription(@Nonnull String projectDescription) {
-        this.projectDescription = projectDescription;
+    public void description(@Nonnull String description) {
+        this.description = description;
     }
 
-    public void projectAuthor(@Nonnull Closure c) {
-        Person author = new Person();
-        ConfigureUtil.configure(c, author);
-        LOG.info("Adding author " + author);
-        projectAuthors.add(author);
+    public void author(@Nonnull Closure c) {
+        Person person = new Person();
+        ConfigureUtil.configure(c, person);
+        LOG.info("Adding author " + person);
+        authors.add(person);
+    }
+
+    public void license(@Nonnull String name) {
+        License license = License.LICENSES.get(name);
+        if (license == null)
+            throw new IllegalArgumentException("Unknown license " + name + "; available are " + License.LICENSES.keySet() + " or configure with a Closure.");
+        licenses.add(license);
+    }
+
+    public void license(@Nonnull Closure closure) {
+        License license = new License();
+        ConfigureUtil.configure(closure, license);
+        licenses.add(license);
     }
 }
