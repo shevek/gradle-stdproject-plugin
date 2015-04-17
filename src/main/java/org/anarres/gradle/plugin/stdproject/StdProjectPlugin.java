@@ -2,8 +2,6 @@ package org.anarres.gradle.plugin.stdproject;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import nl.javadude.gradle.plugins.license.LicenseExtension;
@@ -14,10 +12,8 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.file.FileCollection;
 import org.gradle.api.file.FileTree;
-import org.gradle.api.initialization.dsl.ScriptHandler;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
@@ -38,76 +34,19 @@ import org.gradle.api.tasks.wrapper.Wrapper;
  */
 public class StdProjectPlugin implements Plugin<Project> {
 
-    /*
-     private static interface DocTaskHandler<T extends SourceTask> {
-
-     @Nonnull
-     public Class<T> getDocTaskClass();
-
-     public void setClassPath(@Nonnull T task, @Nonnull FileCollection classpath);
-
-     public void setDestinationDir(@Nonnull T task, @Nonnull File dir);
-     }
-
-     private static class JavadocTaskHandler implements DocTaskHandler<Javadoc> {
-
-     @Override
-     public Class<Javadoc> getDocTaskClass() {
-     return Javadoc.class;
-     }
-
-     @Override
-     public void setClassPath(Javadoc task, FileCollection classpath) {
-     task.setClasspath(classpath);
-     }
-
-     @Override
-     public void setDestinationDir(Javadoc task, File dir) {
-     task.setDestinationDir(dir);
-     }
-     }
-
-     private static class ScaladocTaskHandler implements DocTaskHandler<ScalaDoc> {
-
-     @Override
-     public Class<ScalaDoc> getDocTaskClass() {
-     return ScalaDoc.class;
-     }
-
-     @Override
-     public void setClassPath(ScalaDoc task, FileCollection classpath) {
-     task.setClasspath(classpath);
-     }
-
-     @Override
-     public void setDestinationDir(ScalaDoc task, File dir) {
-     task.setDestinationDir(dir);
-     }
-     }
-
-     private static class GroovydocTaskHandler implements DocTaskHandler<Groovydoc> {
-
-     @Override
-     public Class<Groovydoc> getDocTaskClass() {
-     return Groovydoc.class;
-     }
-
-     @Override
-     public void setClassPath(Groovydoc task, FileCollection classpath) {
-     task.setClasspath(classpath);
-     }
-
-     @Override
-     public void setDestinationDir(Groovydoc task, File dir) {
-     task.setDestinationDir(dir);
-     }
-     }
-     */
     public static <T> T getExtraPropertyOrNull(@Nonnull Project project, @Nonnull String name) {
         ExtraPropertiesExtension properties = project.getExtensions().getExtraProperties();
         if (properties.has(name))
             return (T) properties.get(name);
         return null;
+    }
+
+    @Nonnull
+    public static String getGithubUser(@Nonnull Project project) {
+        String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
+        if (githubUserName == null)
+            githubUserName = System.getProperty("user.name");
+        return githubUserName;
     }
 
     /**
@@ -127,16 +66,14 @@ public class StdProjectPlugin implements Plugin<Project> {
         if (githubProjectName == null)
             githubProjectName = project.getName();
 
-        String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
-        if (githubUserName == null)
-            githubUserName = System.getProperty("user.name");
+        String githubUserName = getGithubUser(project);
 
         return githubUserName + "/" + githubProjectName;
     }
 
     @Override
     public void apply(final Project project) {
-        final StdProjectExtension extension = project.getExtensions().create("stdproject", StdProjectExtension.class);
+        final StdProjectExtension extension = project.getExtensions().create("stdproject", StdProjectExtension.class, project);
 
         // Convention
         project.getPlugins().apply(BuildAnnouncementsPlugin.class);
@@ -232,24 +169,10 @@ public class StdProjectPlugin implements Plugin<Project> {
             license.setSkipExistingHeaders(true);
             license.setIgnoreFailures(true);
         }
+        // githubPages.getPages().from(t).into("docs/" + shortName);
 
         // Misc
-        project.getTasks().create("buildDependencies", new Action<Task>() {
-            @Override
-            public void execute(Task t) {
-                t.doLast(new Action<Task>() {
-                    @Override
-                    public void execute(Task t) {
-                        SortedSet<String> dependencies = new TreeSet<String>();
-                        ConfigurationContainer container = project.getBuildscript().getConfigurations();
-                        for (File file : container.getByName(ScriptHandler.CLASSPATH_CONFIGURATION))
-                            dependencies.add(file.getName());
-                        for (String dependency : dependencies)
-                            System.out.println(dependency);
-                    }
-                });
-            }
-        });
+        project.getTasks().create("buildDependencies", BuildDependencies.class);
     }
 
 }

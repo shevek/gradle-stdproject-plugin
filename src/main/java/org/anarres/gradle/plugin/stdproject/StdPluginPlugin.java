@@ -15,7 +15,9 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.api.tasks.SourceSetContainer;
 
 /**
@@ -26,7 +28,14 @@ public class StdPluginPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
-        final StdPluginExtension extension = project.getExtensions().create("stdplugin", StdPluginExtension.class);
+        final StdPluginExtension extension = project.getExtensions().create("stdplugin", StdPluginExtension.class, project);
+
+        // Gradle
+        project.getRepositories().add(project.getRepositories().jcenter());
+        project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());
+
+        // Maven
+        project.getPlugins().apply(MavenPublishPlugin.class);
 
         // Bintray
         project.getPlugins().apply(BintrayPlugin.class);
@@ -44,6 +53,8 @@ public class StdPluginPlugin implements Plugin<Project> {
         Task generatePluginDescriptors = project.getTasks().create("generatePluginDescriptors", GeneratePluginDescriptors.class, new Action<GeneratePluginDescriptors>() {
             @Override
             public void execute(GeneratePluginDescriptors t) {
+                // t.setGroup("Build");
+                t.setDescription("Generates gradle plugin descriptors.");
                 t.setDestinationDir(pluginDescriptorDir);
                 t.conventionMapping("pluginImplementations", new Callable<Map<String, String>>() {
                     @Override

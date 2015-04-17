@@ -1,9 +1,11 @@
 package org.anarres.gradle.plugin.stdproject;
 
+import groovy.lang.GroovyObjectSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.Nonnull;
+import org.gradle.api.Project;
 
 /**
  * The standard project plugin extension.
@@ -13,8 +15,12 @@ import javax.annotation.Nonnull;
  *
  * @author shevek
  */
-public class StdProjectExtension {
+public class StdProjectExtension extends GroovyObjectSupport {
 
+    public StdProjectExtension(@Nonnull Project project) {
+    }
+
+    // aggregateJavadoc requires this.
     public List<String> javadocLinks = new ArrayList<String>() {
         {
             addAll(Arrays.asList(
@@ -29,5 +35,4 @@ public class StdProjectExtension {
     public void javadocLink(@Nonnull String uri) {
         javadocLinks.add(uri);
     }
-
 }
