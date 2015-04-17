@@ -5,16 +5,16 @@ import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferPlugin;
 import com.bmuschko.gradle.nexus.NexusPlugin;
 import com.bmuschko.gradle.nexus.NexusPluginExtension;
 import com.github.benmanes.gradle.versions.VersionsPlugin;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import groovy.lang.Closure;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import nebula.plugin.info.InfoPlugin;
 import net.saliman.gradle.plugin.cobertura.CoberturaExtension;
 import net.saliman.gradle.plugin.cobertura.CoberturaPlugin;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
@@ -35,6 +35,8 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent;
 import org.gradle.api.tasks.testing.logging.TestLoggingContainer;
 import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import org.gradle.util.ConfigureUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The standard module plugin.
@@ -42,6 +44,8 @@ import org.gradle.util.ConfigureUtil;
  * @author shevek
  */
 public class StdModulePlugin implements Plugin<Project> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(StdModulePlugin.class);
 
     public static void configureJavadoc(@Nonnull final Project project, @Nonnull final Javadoc javadoc) {
         final StdProjectExtension extension = project.getRootProject().getExtensions().getByType(StdProjectExtension.class);
@@ -135,32 +139,53 @@ public class StdModulePlugin implements Plugin<Project> {
 
                     for (MavenResolver resolver : upload.getRepositories().withType(MavenResolver.class)) {
                         MavenPom pom = resolver.getPom();
-                        /*
-                        t.getLogger().info("Task " + upload + " pom " + pom + " of " + pom.getClass());
-                        t.getLogger().info("Task " + upload + " model " + pom.getModel() + " of " + pom.getModel().getClass());
-                        CompositeQuery q = new CompositeQuery();
-                        q.add(new ClassQuery(pom.getClass()));
-                        q.add(new ClassQuery(pom.getModel().getClass()));
-                        q.add(new ClassQuery(getClass()));
-                        q.add(new ClassLoaderQuery("maven", pom.getModel().getClass().getClassLoader()));
-                        q.add(new ClassLoaderQuery("self", getClass().getClassLoader()));
-                        t.getLogger().info(String.valueOf(q.call()));
-                        */
+                        // We can't cast (Model) pom.getModel() because of FilteringClassLoader.
 
+                        /*
+                         t.getLogger().info("Task " + upload + " pom " + pom + " of " + pom.getClass());
+                         t.getLogger().info("Task " + upload + " model " + pom.getModel() + " of " + pom.getModel().getClass());
+                         CompositeQuery q = new CompositeQuery();
+                         q.add(new ClassQuery(pom.getClass()));
+                         q.add(new ClassQuery(pom.getModel().getClass()));
+                         q.add(new ClassQuery(getClass()));
+                         q.add(new ClassLoaderQuery("maven", pom.getModel().getClass().getClassLoader()));
+                         q.add(new ClassLoaderQuery("self", getClass().getClassLoader()));
+                         t.getLogger().info(String.valueOf(q.call()));
+                         */
+
+                        // developers is a List<Developer> and licenses is a List<License>
+                        // so they need special treatment.
+                        pom.project(new Closure(StdModulePlugin.this) {
+                            @Override
+                            public Object call(Object... args) {
+                                final Object pom = getDelegate();  // It's a CustomModelBuilder extends ModelBuilder extends FactoryBuilderSupport
+                                DefaultGroovyMethods.invokeMethod(pom, "developers", new Closure(StdModulePlugin.this) {
+                                    @Override
+                                    public Object call(Object... args) {
+                                        // This delegates to the same ModelBuilder, with an internal state
+                                        // change to represent that we're now in the developers{} block.
+                                        // LOG.debug("Developers delegate is {}", getDelegate());
+                                        for (StdModuleExtension.Person person : extension.projectAuthors) {
+                                            Object developer = DefaultGroovyMethods.invokeMethod(pom, "developer", null);
+                                            ConfigureUtil.configureByMap(ImmutableMap.<String, Object>of(
+                                                    "id", person.id,
+                                                    "name", person.name,
+                                                    "email", person.email
+                                            ), developer);
+                                            if (LOG.isDebugEnabled())
+                                                LOG.debug("Developer value is {} with props {}", developer, DefaultGroovyMethods.getProperties(developer));
+                                        }
+                                        return null;
+                                    }
+                                });
+                                return null;
+                            }
+                        });
+
+                        // Everything else is simple, and we can do this:
                         Map<String, Object> pomData = new HashMap<String, Object>();
                         pomData.put("name", project.getName());
                         pomData.put("description", extension.projectDescription);
-                        if (false)
-                        pomData.put("developers", Lists.transform(extension.projectAuthors, new Function<StdModuleExtension.Person, Map<String, Object>>() {
-                            @Override
-                            public Map<String, Object> apply(StdModuleExtension.Person input) {
-                                return ImmutableMap.<String, Object>of(
-                                        "id", input.id,
-                                        "name", input.name,
-                                        "email", input.email
-                                );
-                            }
-                        }));
                         pomData.put("url", extension.projectUrl);
                         pomData.put("inceptionYear", extension.projectInceptionYear);
                         pomData.put("scm", ImmutableMap.<String, Object>of(
@@ -174,34 +199,6 @@ public class StdModulePlugin implements Plugin<Project> {
                         ));
                         t.getLogger().info("Configuring " + pom + " with " + pomData);
                         ConfigureUtil.configureByMap(pomData, pom.getModel());
-
-                        /*
-                         Model model = (Model) pom.getModel();
-                         model.setName(project.getName());
-                         model.setDescription(extension.projectDescription);
-                         for (StdModuleExtension.Author author : extension.projectAuthors) {
-                         Developer developer = new Developer();
-                         developer.setId(author.id);
-                         developer.setName(author.name);
-                         developer.setEmail(author.email);
-                         model.addDeveloper(developer);
-                         }
-
-                         // for (String license : extension.projectLicenses) { }
-                         model.setUrl(extension.projectUrl);
-                         model.setInceptionYear(extension.projectInceptionYear);
-
-                         Scm scm = new Scm();
-                         scm.setConnection(extension.projectVcsUrl);
-                         scm.setUrl(extension.projectVcsUrl);
-                         scm.setDeveloperConnection(extension.projectVcsUrl);
-                         model.setScm(scm);
-
-                         IssueManagement issueManagement = new IssueManagement();
-                         issueManagement.setSystem("github");
-                         issueManagement.setUrl(extension.projectIssuesUrl);
-                         model.setIssueManagement(issueManagement);
-                         */
                     }
                 }
 
