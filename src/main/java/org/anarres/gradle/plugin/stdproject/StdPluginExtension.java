@@ -20,25 +20,29 @@ public class StdPluginExtension extends GroovyObjectSupport {
 
     // public String pluginName;
     // public String pluginDescription;
-    public Map<String, String> pluginImplementations = new HashMap<String, String>();
+    public Map<String, String> implementations = new HashMap<String, String>();
     // public final Set<String> pluginLicenses = new LinkedHashSet<String>();
-    public final Set<String> pluginTags = new LinkedHashSet<String>();
+    public final Set<String> tags = new LinkedHashSet<String>();
 
     public StdPluginExtension(@Nonnull Project project) {
         // pluginName = project.getName();
         // pluginLicenses.add("Apache-2.0");
     }
 
-    public void pluginImplementation(@Nonnull String id, @Nonnull String implementationClass) {
-        pluginImplementations.put(id, implementationClass);
+    public void implementation(@Nonnull String id, @Nonnull String implementationClass) {
+        implementations.put(id, implementationClass);
     }
 
-    public void pluginImplementation(@Nonnull String implementationClass) {
+    public void implementation(@Nonnull String implementationClass) {
         String id = implementationClass.
                 replaceAll("\\.gradle\\.", ".").
                 replaceAll("\\.plugin\\.", ".").
                 substring(0, implementationClass.lastIndexOf('.'));
-        pluginImplementation(id, implementationClass);
+        implementation(id, implementationClass);
     }
 
+    public void tags(Object... tags) {
+        for (Object tag : tags)
+            this.tags.add(String.valueOf(tag));
+    }
 }

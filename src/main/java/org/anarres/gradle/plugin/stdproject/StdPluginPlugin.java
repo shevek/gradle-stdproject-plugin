@@ -59,7 +59,7 @@ public class StdPluginPlugin implements Plugin<Project> {
                 t.conventionMapping("pluginImplementations", new Callable<Map<String, String>>() {
                     @Override
                     public Map<String, String> call() throws Exception {
-                        return extension.pluginImplementations;
+                        return extension.implementations;
                     }
                 });
             }

@@ -50,13 +50,14 @@ public class StdModulePlugin implements Plugin<Project> {
     public static void configureJavadoc(@Nonnull final Project project, @Nonnull final Javadoc javadoc) {
         final StdProjectExtension extension = project.getRootProject().getExtensions().getByType(StdProjectExtension.class);
         final StandardJavadocDocletOptions javadocOptions = (StandardJavadocDocletOptions) javadoc.getOptions();
-        if (JavaVersion.current().isJava8Compatible())
-            javadocOptions.addStringOption("Xdoclint:none", "-quiet");
         javadoc.doFirst(new Action<Task>() {
             @Override
             public void execute(Task t) {
                 javadocOptions.setLinkSource(true);
                 javadocOptions.setLinks(extension.javadocLinks);
+                if (JavaVersion.current().isJava8Compatible())
+                    if (extension.javadocQuiet)
+                        javadocOptions.addStringOption("Xdoclint:none", "-quiet");
             }
         });
     }

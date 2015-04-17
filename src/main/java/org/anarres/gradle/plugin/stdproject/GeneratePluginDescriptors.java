@@ -5,7 +5,6 @@
  */
 package org.anarres.gradle.plugin.stdproject;
 
-import com.google.common.base.Preconditions;
 import java.io.File;
 import java.util.Map;
 import javax.annotation.Nonnull;
