@@ -56,6 +56,8 @@ public class StdModulePlugin implements Plugin<Project> {
                 if (!t.getProject().getGradle().getStartParameter().isOffline())
                     javadocOptions.setLinks(extension.javadocLinks);
                 javadocOptions.setLinkSource(extension.javadocLinkSource);
+                if (!extension.javadocGroups.isEmpty())
+                    javadocOptions.setGroups(extension.javadocGroups);
                 if (JavaVersion.current().isJava8Compatible())
                     if (extension.javadocQuiet)
                         javadocOptions.addStringOption("Xdoclint:none", "-quiet");
@@ -84,6 +86,7 @@ public class StdModulePlugin implements Plugin<Project> {
         project.getRepositories().add(project.getRepositories().jcenter());
 
         project.getDependencies().add("testCompile", "junit:junit:4.12");
+        project.getDependencies().add("testCompile", "org.slf4j:slf4j-api:1.7.12");
         project.getDependencies().add("testRuntime", "ch.qos.logback:logback-classic:1.1.3");
 
         Javadoc javadoc = (Javadoc) project.getTasks().getByName(JavaPlugin.JAVADOC_TASK_NAME);

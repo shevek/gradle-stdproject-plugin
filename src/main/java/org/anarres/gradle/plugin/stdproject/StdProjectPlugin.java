@@ -1,7 +1,10 @@
 package org.anarres.gradle.plugin.stdproject;
 
+import groovy.lang.Closure;
 import java.io.File;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import nl.javadude.gradle.plugins.license.LicenseExtension;
@@ -12,7 +15,9 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
+import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPlugin;
@@ -86,15 +91,20 @@ public class StdProjectPlugin implements Plugin<Project> {
 
         // Github
         project.getPlugins().apply(GithubPagesPlugin.class);
+        // Task githubPagesTask = project.getTasks().getByName(GithubPagesPlugin.getPUBLISH_TASK_NAME());
 
-        final GithubPagesPluginExtension githubPages = project.getExtensions().getByType(GithubPagesPluginExtension.class);
-        githubPages.setRepoUri("git@github.com:" + getGithubPath(project) + ".git");
+        final GithubPagesPluginExtension github = project.getExtensions().getByType(GithubPagesPluginExtension.class);
+        github.setRepoUri("git@github.com:" + getGithubPath(project) + ".git");
+        final Task githubTask = project.getTasks().getByName("publishGhPages");
 
         // Github - aggregate documentation
         for (final Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
 
             project.getLogger().info("Aggregating " + docTaskClass.getSimpleName() + " for " + project);
 
+            final Set<SourceTask> docTasks = new HashSet<SourceTask>();
+            for (Project subproject : project.getAllprojects())
+                docTasks.addAll(subproject.getTasks().withType(docTaskClass));
             /* We're still in stdproject - no modules have been configured yet.
              EXISTS:
              {
@@ -106,38 +116,28 @@ public class StdProjectPlugin implements Plugin<Project> {
              }
              */
             final String shortName = docTaskClass.getSimpleName().toLowerCase();
-            project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
+            final SourceTask docAggregateTask = project.getTasks().create("aggregate" + docTaskClass.getSimpleName(), docTaskClass, new Action<SourceTask>() {
                 @Override
                 public void execute(final SourceTask t) {
                     t.setProperty("destinationDir", new File(project.getBuildDir(), "docs/" + shortName));
-                    t.doFirst(new Action<Task>() {
-                        @Override
-                        public void execute(Task _t) {
-                            // TODO: t.source(...);
-                            // TODO: t.setProperty("classpath", null);
-                        }
-                    });
                     if (t instanceof Javadoc)
                         StdModulePlugin.configureJavadoc(project, (Javadoc) t);
-                    // githubPages.getPages().from(t.getOutputs().getFiles()).into("docs/" + shortName);
-                    githubPages.getPages().from(t).into("docs/" + shortName);
 
                     t.conventionMapping("source", new Callable<FileTree>() {
                         @Override
                         public FileTree call() throws Exception {
                             FileCollection sources = project.files();
                             for (Project subproject : project.getAllprojects()) {
-                                t.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
+                                // t.getLogger().info("Searching " + subproject + " for " + docTaskClass.getSimpleName());
                                 for (SourceTask docTask : subproject.getTasks().withType(docTaskClass)) {
                                     if (docTask == t)
                                         continue;   // We exist now; skip ourselves or we recurse into this convention.
-                                    t.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
+                                    // t.getLogger().info("Adding sources from " + docTask + ": " + docTask.getSource());
                                     sources = sources.plus(docTask.getSource());
                                 }
                             }
 
-                            t.getLogger().info("Sources are " + sources);
-
+                            // t.getLogger().info("Sources are " + sources);
                             return sources.getAsFileTree();
                         }
                     });
@@ -158,6 +158,16 @@ public class StdProjectPlugin implements Plugin<Project> {
 
                 }
             });
+
+            github.getPages().from(docAggregateTask.getOutputs().getFiles(), new Closure<Void>(StdProjectPlugin.this) {
+                @Override
+                public Void call(Object... args) {
+                    CopySpec spec = (CopySpec) getDelegate();
+                    spec.into("docs/" + shortName);
+                    return null;
+                }
+            });
+            githubTask.dependsOn(docAggregateTask);
 
         }
 

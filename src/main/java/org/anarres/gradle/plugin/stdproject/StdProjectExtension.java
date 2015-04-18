@@ -3,7 +3,9 @@ package org.anarres.gradle.plugin.stdproject;
 import groovy.lang.GroovyObjectSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
 import org.gradle.api.Project;
 
@@ -20,6 +22,17 @@ public class StdProjectExtension extends GroovyObjectSupport {
     public StdProjectExtension(@Nonnull Project project) {
     }
 
+    public Map<String, List<String>> javadocGroups = new LinkedHashMap<String, List<String>>();
+
+    public void javadocGroup(@Nonnull String title, @Nonnull String... patterns) {
+        List<String> group = javadocGroups.get(title);
+        if (group == null) {
+            group = new ArrayList<String>();
+            javadocGroups.put(title, group);
+        }
+        group.addAll(Arrays.asList(patterns));
+    }
+
     // aggregateJavadoc requires this.
     public List<String> javadocLinks = new ArrayList<String>() {
         {
@@ -32,8 +45,9 @@ public class StdProjectExtension extends GroovyObjectSupport {
         }
     };
 
-    public void javadocLink(@Nonnull String uri) {
-        javadocLinks.add(uri);
+    public void javadocLink(@Nonnull Object... uris) {
+        for (Object uri : uris)
+            javadocLinks.add(String.valueOf(uri));
     }
     public boolean javadocLinkSource = true;
 
