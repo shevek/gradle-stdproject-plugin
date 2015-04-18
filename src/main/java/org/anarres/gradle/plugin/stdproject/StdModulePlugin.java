@@ -53,8 +53,9 @@ public class StdModulePlugin implements Plugin<Project> {
         javadoc.doFirst(new Action<Task>() {
             @Override
             public void execute(Task t) {
-                javadocOptions.setLinkSource(true);
-                javadocOptions.setLinks(extension.javadocLinks);
+                if (!t.getProject().getGradle().getStartParameter().isOffline())
+                    javadocOptions.setLinks(extension.javadocLinks);
+                javadocOptions.setLinkSource(extension.javadocLinkSource);
                 if (JavaVersion.current().isJava8Compatible())
                     if (extension.javadocQuiet)
                         javadocOptions.addStringOption("Xdoclint:none", "-quiet");
@@ -81,6 +82,9 @@ public class StdModulePlugin implements Plugin<Project> {
 
         project.getRepositories().add(project.getRepositories().mavenCentral());
         project.getRepositories().add(project.getRepositories().jcenter());
+
+        project.getDependencies().add("testCompile", "junit:junit:4.12");
+        project.getDependencies().add("testRuntime", "ch.qos.logback:logback-classic:1.1.3");
 
         Javadoc javadoc = (Javadoc) project.getTasks().getByName(JavaPlugin.JAVADOC_TASK_NAME);
         configureJavadoc(project, javadoc);
@@ -220,8 +224,7 @@ public class StdModulePlugin implements Plugin<Project> {
                 }
 
             }
-        }
-        );
+        });
     }
 
 }

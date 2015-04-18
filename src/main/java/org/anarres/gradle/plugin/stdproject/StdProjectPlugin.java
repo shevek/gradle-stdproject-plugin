@@ -43,6 +43,7 @@ public class StdProjectPlugin implements Plugin<Project> {
 
     @Nonnull
     public static String getGithubUser(@Nonnull Project project) {
+        project = project.getRootProject();
         String githubUserName = getExtraPropertyOrNull(project, "githubUserName");
         if (githubUserName == null)
             githubUserName = System.getProperty("user.name");

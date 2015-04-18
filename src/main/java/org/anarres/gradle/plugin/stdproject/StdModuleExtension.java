@@ -5,7 +5,9 @@ import groovy.lang.Closure;
 import groovy.lang.GroovyObjectSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Nonnull;
+import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.gradle.api.Project;
 import org.gradle.util.ConfigureUtil;
 import org.slf4j.Logger;
@@ -72,10 +74,16 @@ public class StdModuleExtension extends GroovyObjectSupport {
         this.description = description;
     }
 
+    public void author(@Nonnull Map<String, Object> m) {
+        Person person = new Person();
+        ConfigureUtil.configureByMap(m, person);
+        authors.add(person);
+    }
+
     public void author(@Nonnull Closure c) {
         Person person = new Person();
         ConfigureUtil.configure(c, person);
-        LOG.info("Adding author " + person);
+        // LOG.info("Adding author " + person);
         authors.add(person);
     }
 
@@ -83,6 +91,12 @@ public class StdModuleExtension extends GroovyObjectSupport {
         License license = License.LICENSES.get(name);
         if (license == null)
             throw new IllegalArgumentException("Unknown license " + name + "; available are " + License.LICENSES.keySet() + " or configure with a Closure.");
+        licenses.add(license);
+    }
+
+    public void license(@Nonnull Map<String, Object> m) {
+        License license = new License();
+        ConfigureUtil.configureByMap(m, license, DefaultGroovyMethods.getProperties(license).keySet());
         licenses.add(license);
     }
 

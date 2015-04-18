@@ -31,11 +31,17 @@ public class StdProjectExtension extends GroovyObjectSupport {
                     "http://docs.guava-libraries.googlecode.com/git/javadoc/"));
         }
     };
-    public boolean javadocQuiet = false;
 
     public void javadocLink(@Nonnull String uri) {
         javadocLinks.add(uri);
     }
+    public boolean javadocLinkSource = true;
+
+    public void javadocLinkSource(boolean value) {
+        this.javadocLinkSource = value;
+    }
+
+    public boolean javadocQuiet = false;
 
     public void javadocQuiet(boolean value) {
         this.javadocQuiet = value;

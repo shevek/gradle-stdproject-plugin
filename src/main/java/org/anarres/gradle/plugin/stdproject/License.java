@@ -5,6 +5,7 @@
  */
 package org.anarres.gradle.plugin.stdproject;
 
+import groovy.lang.GroovyObjectSupport;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +15,7 @@ import javax.annotation.Nonnull;
  *
  * @author shevek
  */
-public class License {
+public class License extends GroovyObjectSupport {
 
     public static final Map<String, License> LICENSES = new HashMap<String, License>() {
         private void add(@Nonnull String name, @Nonnull String title, @Nonnull String url) {

@@ -47,11 +47,7 @@ subprojects {
 			name 'My Name'
 			email 'my@email.com'
 		}
-		author {
-			id 'you'
-			name 'Your Name'
-			email 'you@email.com'
-		}
+		author id: 'you', name: 'Your Name', email: 'you@email.com'
 		license 'Apache-2.0'
 		license {
 			name 'My Custom License'
