@@ -159,6 +159,8 @@ public class StdProjectPlugin implements Plugin<Project> {
                 }
             });
 
+            // This should work but doesn't because of https://github.com/ajoberstar/gradle-git/issues/113
+            // github.getPages().from(docAggregateTask, new Closure<Void>(StdProjectPlugin.this) {
             github.getPages().from(docAggregateTask.getOutputs().getFiles(), new Closure<Void>(StdProjectPlugin.this) {
                 @Override
                 public Void call(Object... args) {
