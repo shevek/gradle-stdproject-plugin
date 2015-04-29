@@ -47,24 +47,6 @@ public class StdModulePlugin implements Plugin<Project> {
 
     private static final Logger LOG = LoggerFactory.getLogger(StdModulePlugin.class);
 
-    public static void configureJavadoc(@Nonnull final Project project, @Nonnull final Javadoc javadoc) {
-        final StdProjectExtension extension = project.getRootProject().getExtensions().getByType(StdProjectExtension.class);
-        final StandardJavadocDocletOptions javadocOptions = (StandardJavadocDocletOptions) javadoc.getOptions();
-        javadoc.doFirst(new Action<Task>() {
-            @Override
-            public void execute(Task t) {
-                if (!t.getProject().getGradle().getStartParameter().isOffline())
-                    javadocOptions.setLinks(extension.javadocLinks);
-                javadocOptions.setLinkSource(extension.javadocLinkSource);
-                if (!extension.javadocGroups.isEmpty())
-                    javadocOptions.setGroups(extension.javadocGroups);
-                if (JavaVersion.current().isJava8Compatible())
-                    if (extension.javadocQuiet)
-                        javadocOptions.addStringOption("Xdoclint:none", "-quiet");
-            }
-        });
-    }
-
     @Override
     public void apply(final Project project) {
         // Root
@@ -89,8 +71,9 @@ public class StdModulePlugin implements Plugin<Project> {
         project.getDependencies().add("testCompile", "org.slf4j:slf4j-api:1.7.12");
         project.getDependencies().add("testRuntime", "ch.qos.logback:logback-classic:1.1.3");
 
-        Javadoc javadoc = (Javadoc) project.getTasks().getByName(JavaPlugin.JAVADOC_TASK_NAME);
-        configureJavadoc(project, javadoc);
+        // Javadoc javadoc = (Javadoc) project.getTasks().getByName(JavaPlugin.JAVADOC_TASK_NAME);
+        for (Javadoc javadoc : project.getTasks().withType(Javadoc.class))
+            StdTaskConfiguration.configureJavadoc(project, javadoc);
 
         Test test = (Test) project.getTasks().getByName(JavaPlugin.TEST_TASK_NAME);
         test.systemProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");

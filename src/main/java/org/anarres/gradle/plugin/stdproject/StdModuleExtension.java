@@ -2,6 +2,7 @@ package org.anarres.gradle.plugin.stdproject;
 
 import com.google.common.base.Objects;
 import groovy.lang.Closure;
+import groovy.lang.DelegatesTo;
 import groovy.lang.GroovyObjectSupport;
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +81,7 @@ public class StdModuleExtension extends GroovyObjectSupport {
         authors.add(person);
     }
 
-    public void author(@Nonnull Closure c) {
+    public void author(@Nonnull @DelegatesTo(Person.class) Closure c) {
         Person person = new Person();
         ConfigureUtil.configure(c, person);
         // LOG.info("Adding author " + person);
@@ -100,7 +101,7 @@ public class StdModuleExtension extends GroovyObjectSupport {
         licenses.add(license);
     }
 
-    public void license(@Nonnull Closure closure) {
+    public void license(@Nonnull @DelegatesTo(License.class) Closure closure) {
         License license = new License();
         ConfigureUtil.configure(closure, license);
         licenses.add(license);

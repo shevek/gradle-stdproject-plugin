@@ -121,7 +121,7 @@ public class StdProjectPlugin implements Plugin<Project> {
                 public void execute(final SourceTask t) {
                     t.setProperty("destinationDir", new File(project.getBuildDir(), "docs/" + shortName));
                     if (t instanceof Javadoc)
-                        StdModulePlugin.configureJavadoc(project, (Javadoc) t);
+                        StdTaskConfiguration.configureJavadoc(project, (Javadoc) t);
 
                     t.conventionMapping("source", new Callable<FileTree>() {
                         @Override
