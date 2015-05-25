@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * To change this license header, choose License Headers in Project Properties.<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * To change this template file, choose Tools | Templates<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * and open the template in the editor.<a name="line.4"></a>
+<span class="sourceLineNo">005</span> */<a name="line.5"></a>
+<span class="sourceLineNo">006</span>package org.anarres.gradle.plugin.stdproject;<a name="line.6"></a>
+<span class="sourceLineNo">007</span><a name="line.7"></a>
+<span class="sourceLineNo">008</span>import com.jfrog.bintray.gradle.BintrayExtension;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import com.jfrog.bintray.gradle.BintrayPlugin;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import java.io.File;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import java.util.Collections;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import java.util.Map;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import java.util.concurrent.Callable;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>import org.gradle.api.Action;<a name="line.14"></a>
+<span class="sourceLineNo">015</span>import org.gradle.api.Plugin;<a name="line.15"></a>
+<span class="sourceLineNo">016</span>import org.gradle.api.Project;<a name="line.16"></a>
+<span class="sourceLineNo">017</span>import org.gradle.api.Task;<a name="line.17"></a>
+<span class="sourceLineNo">018</span>import org.gradle.api.plugins.JavaPlugin;<a name="line.18"></a>
+<span class="sourceLineNo">019</span>import org.gradle.api.plugins.JavaPluginConvention;<a name="line.19"></a>
+<span class="sourceLineNo">020</span>import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;<a name="line.20"></a>
+<span class="sourceLineNo">021</span>import org.gradle.api.tasks.SourceSetContainer;<a name="line.21"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span>/**<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * @author shevek<a name="line.25"></a>
+<span class="sourceLineNo">026</span> */<a name="line.26"></a>
+<span class="sourceLineNo">027</span>public class StdPluginPlugin implements Plugin&lt;Project&gt; {<a name="line.27"></a>
+<span class="sourceLineNo">028</span><a name="line.28"></a>
+<span class="sourceLineNo">029</span>    @Override<a name="line.29"></a>
+<span class="sourceLineNo">030</span>    public void apply(Project project) {<a name="line.30"></a>
+<span class="sourceLineNo">031</span>        final StdPluginExtension extension = project.getExtensions().create("stdplugin", StdPluginExtension.class, project);<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>        // Gradle<a name="line.33"></a>
+<span class="sourceLineNo">034</span>        project.getRepositories().add(project.getRepositories().jcenter());<a name="line.34"></a>
+<span class="sourceLineNo">035</span>        project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>        // Maven<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        project.getPlugins().apply(MavenPublishPlugin.class);<a name="line.38"></a>
+<span class="sourceLineNo">039</span><a name="line.39"></a>
+<span class="sourceLineNo">040</span>        // Bintray<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        project.getPlugins().apply(BintrayPlugin.class);<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        BintrayExtension bintray = project.getExtensions().getByType(BintrayExtension.class);<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        String bintrayUsername = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayUsername");<a name="line.43"></a>
+<span class="sourceLineNo">044</span>        if (bintrayUsername != null)<a name="line.44"></a>
+<span class="sourceLineNo">045</span>            bintray.setUser(bintrayUsername);<a name="line.45"></a>
+<span class="sourceLineNo">046</span>        String bintrayApiKey = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayApiKey");<a name="line.46"></a>
+<span class="sourceLineNo">047</span>        if (bintrayApiKey != null)<a name="line.47"></a>
+<span class="sourceLineNo">048</span>            bintray.setKey(bintrayApiKey);<a name="line.48"></a>
+<span class="sourceLineNo">049</span>        bintray.getPkg().setRepo("gradle-plugins");<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>        // Plugin<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        final File pluginDescriptorDir = new File(project.getBuildDir(), "generated-resources/gradle-plugin");<a name="line.52"></a>
+<span class="sourceLineNo">053</span>        Task generatePluginDescriptors = project.getTasks().create("generatePluginDescriptors", GeneratePluginDescriptors.class, new Action&lt;GeneratePluginDescriptors&gt;() {<a name="line.53"></a>
+<span class="sourceLineNo">054</span>            @Override<a name="line.54"></a>
+<span class="sourceLineNo">055</span>            public void execute(GeneratePluginDescriptors t) {<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                // t.setGroup("Build");<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                t.setDescription("Generates gradle plugin descriptors.");<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                t.setDestinationDir(pluginDescriptorDir);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                t.conventionMapping("pluginImplementations", new Callable&lt;Map&lt;String, String&gt;&gt;() {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>                    @Override<a name="line.60"></a>
+<span class="sourceLineNo">061</span>                    public Map&lt;String, String&gt; call() throws Exception {<a name="line.61"></a>
+<span class="sourceLineNo">062</span>                        return extension.implementations;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>                    }<a name="line.63"></a>
+<span class="sourceLineNo">064</span>                });<a name="line.64"></a>
+<span class="sourceLineNo">065</span>            }<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        });<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        sourceSets.getByName("main").getOutput().dir(Collections.&lt;String, Object&gt;singletonMap("builtBy", generatePluginDescriptors), pluginDescriptorDir);<a name="line.68"></a>
+<span class="sourceLineNo">069</span>    }<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>}<a name="line.71"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
