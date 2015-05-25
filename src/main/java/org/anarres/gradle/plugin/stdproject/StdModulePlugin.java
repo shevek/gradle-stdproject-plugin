@@ -93,6 +93,7 @@ public class StdModulePlugin implements Plugin<Project> {
             if (key.startsWith(testSystemPropertyPrefix))
                 test.systemProperty(key.substring(testSystemPropertyPrefix.length()), e.getValue());
         }
+        test.addTestListener(new JDiagnosticsTestListener());
 
         TestLoggingContainer testLogging = test.getTestLogging();
         testLogging.events(TestLogEvent.STARTED, TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED);
