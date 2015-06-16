@@ -22,7 +22,7 @@ dependencies {
 	// compile 'com.mapvine:gradle-cobertura-plugin:0.1'
 	compile 'net.saliman:gradle-cobertura-plugin:2.2.5'
 	// compile 'gradle-release:gradle-release:1.1.5'
-	compile 'org.ajoberstar:gradle-git:1.1.0'
+	compile 'org.ajoberstar:gradle-git:1.2.0'
 	// compile 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.5'
 	compile('com.netflix.nebula:gradle-info-plugin:2.2.0') {
 		exclude group: 'com.perforce'
