@@ -20,11 +20,10 @@ projects, but other people or organizations may find it useful.
 
 # Usage
 
-Apply the plugin like this:
+Depend on the plugin like this:
 ```
 buildscript {
     repositories {
-        mavenLocal()
         mavenCentral()
         jcenter()
     }
@@ -38,6 +37,7 @@ Then for a multi-module project:
 ```
 apply plugin: 'org.anarres.stdproject'
 stdproject {
+	// These properties are applied globally.
 	javadocLink "http://netty.io/4.0/api/"
 	javadocGroup "Common Javadoc Group", "org.anarres.project.common*",
 	javadocGroup "Other Javadoc Group", "org.anarres.project.other*",
@@ -59,8 +59,9 @@ subprojects {
 	}
 }
 ```
+You can also put a `stdmodule {}` block within any `project(...) {}` block.
 
-Or for a single-module project:
+For a single-module project, remove the `subprojects {}` wrapper:
 ```
 apply plugin: 'org.anarres.stdproject'
 stdproject {
@@ -72,7 +73,7 @@ stdmodule {
 }
 ```
 
-For a subproject with a gradle plugin, also apply:
+For a subproject which builds a gradle plugin, also apply:
 ```
 project(':myproject-gradle') {
 	apply plugin: 'org.anarres.stdplugin'
