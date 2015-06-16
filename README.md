@@ -29,7 +29,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.0'
+        classpath 'org.anarres.gradle:gradle-stdproject-plugin:1.0.4'
     }
 }
 ```
@@ -37,16 +37,18 @@ buildscript {
 Then for a multi-module project:
 ```
 apply plugin: 'org.anarres.stdproject'
+stdproject {
+	javadocLink "http://netty.io/4.0/api/"
+	javadocGroup "Common Javadoc Group", "org.anarres.project.common*",
+	javadocGroup "Other Javadoc Group", "org.anarres.project.other*",
+	// ...
+}
 subprojects { 
     apply plugin: 'org.anarres.stdmodule'
 	group = 'org.myorg.plugin'
 	stdmodule {
 		description "This is the description of my project."
-		author {
-			id 'me'
-			name 'My Name'
-			email 'my@email.com'
-		}
+		author id: 'me', name: 'My Name', email: 'my@email.com'
 		author id: 'you', name: 'Your Name', email: 'you@email.com'
 		license 'Apache-2.0'
 		license {
@@ -61,21 +63,17 @@ subprojects {
 Or for a single-module project:
 ```
 apply plugin: 'org.anarres.stdproject'
+stdproject {
+	// ...
+}
 apply plugin: 'org.anarres.stdmodule'
 stdmodule {
 	// ...
 }
 ```
 
-For a multi-module project with a gradle plugin:
+For a subproject with a gradle plugin, also apply:
 ```
-apply plugin: 'org.anarres.stdproject'
-subprojects {
-	apply plugin: 'org.anarres.stdmodule'
-	stdmodule {
-		// ...
-	}
-}
 project(':myproject-gradle') {
 	apply plugin: 'org.anarres.stdplugin'
 	stdplugin {
