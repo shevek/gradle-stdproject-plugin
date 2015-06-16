@@ -95,7 +95,7 @@
 <span class="sourceLineNo">087</span>        project.getPlugins().apply(ProjectReportsPlugin.class);<a name="line.87"></a>
 <span class="sourceLineNo">088</span><a name="line.88"></a>
 <span class="sourceLineNo">089</span>        Wrapper wrapper = (Wrapper) project.getTasks().getByName("wrapper");<a name="line.89"></a>
-<span class="sourceLineNo">090</span>        wrapper.setGradleVersion("2.2.1");<a name="line.90"></a>
+<span class="sourceLineNo">090</span>        wrapper.setGradleVersion("2.4");<a name="line.90"></a>
 <span class="sourceLineNo">091</span><a name="line.91"></a>
 <span class="sourceLineNo">092</span>        // Github<a name="line.92"></a>
 <span class="sourceLineNo">093</span>        project.getPlugins().apply(GithubPagesPlugin.class);<a name="line.93"></a>
@@ -168,8 +168,8 @@
 <span class="sourceLineNo">160</span>            });<a name="line.160"></a>
 <span class="sourceLineNo">161</span><a name="line.161"></a>
 <span class="sourceLineNo">162</span>            // This should work but doesn't because of https://github.com/ajoberstar/gradle-git/issues/113<a name="line.162"></a>
-<span class="sourceLineNo">163</span>            // github.getPages().from(docAggregateTask, new Closure&lt;Void&gt;(StdProjectPlugin.this) {<a name="line.163"></a>
-<span class="sourceLineNo">164</span>            github.getPages().from(docAggregateTask.getOutputs().getFiles(), new Closure&lt;Void&gt;(StdProjectPlugin.this) {<a name="line.164"></a>
+<span class="sourceLineNo">163</span>            github.getPages().from(docAggregateTask, new Closure&lt;Void&gt;(StdProjectPlugin.this) {<a name="line.163"></a>
+<span class="sourceLineNo">164</span>            // github.getPages().from(docAggregateTask.getOutputs().getFiles(), new Closure&lt;Void&gt;(StdProjectPlugin.this) {<a name="line.164"></a>
 <span class="sourceLineNo">165</span>                @Override<a name="line.165"></a>
 <span class="sourceLineNo">166</span>                public Void call(Object... args) {<a name="line.166"></a>
 <span class="sourceLineNo">167</span>                    CopySpec spec = (CopySpec) getDelegate();<a name="line.167"></a>
@@ -177,7 +177,7 @@
 <span class="sourceLineNo">169</span>                    return null;<a name="line.169"></a>
 <span class="sourceLineNo">170</span>                }<a name="line.170"></a>
 <span class="sourceLineNo">171</span>            });<a name="line.171"></a>
-<span class="sourceLineNo">172</span>            githubTask.dependsOn(docAggregateTask);<a name="line.172"></a>
+<span class="sourceLineNo">172</span>            // githubTask.dependsOn(docAggregateTask);<a name="line.172"></a>
 <span class="sourceLineNo">173</span><a name="line.173"></a>
 <span class="sourceLineNo">174</span>        }<a name="line.174"></a>
 <span class="sourceLineNo">175</span><a name="line.175"></a>
