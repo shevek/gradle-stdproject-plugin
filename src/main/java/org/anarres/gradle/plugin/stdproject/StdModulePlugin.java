@@ -112,6 +112,8 @@ public class StdModulePlugin implements Plugin<Project> {
         project.getPlugins().apply(CoberturaPlugin.class);
         CoberturaExtension cobertura = project.getExtensions().getByType(CoberturaExtension.class);
         cobertura.setCoverageFormats(Sets.newHashSet("html", "xml"));
+        // https://github.com/stevesaliman/gradle-cobertura-plugin/issues/81
+        // cobertura.setCoberturaVersion("2.1.1");
 
         project.getPlugins().apply(AnimalSnifferPlugin.class);
         AnimalSnifferExtension animalSniffer = project.getExtensions().getByType(AnimalSnifferExtension.class);
