@@ -24,12 +24,12 @@ dependencies {
 	// compile 'gradle-release:gradle-release:1.1.5'
 	compile 'org.ajoberstar:gradle-git:1.2.0'
 	// compile 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.5'
-	compile('com.netflix.nebula:gradle-info-plugin:2.2.0') {
+	compile('com.netflix.nebula:gradle-info-plugin:2.2.2') {
 		exclude group: 'com.perforce'
 	}
 	compile 'com.bmuschko:gradle-nexus-plugin:2.3.1'
 	compile 'be.insaneprogramming.gradle:animalsniffer-gradle-plugin:1.4.0'
-	compile 'com.github.ben-manes:gradle-versions-plugin:0.10.1'
+	compile 'com.github.ben-manes:gradle-versions-plugin:0.11.3'
 	compile 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
 
 	compile 'org.anarres.jdiagnostics:jdiagnostics:1.0.1'
