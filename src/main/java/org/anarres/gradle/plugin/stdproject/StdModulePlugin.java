@@ -5,12 +5,12 @@ import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferPlugin;
 import com.bmuschko.gradle.nexus.NexusPlugin;
 import com.bmuschko.gradle.nexus.NexusPluginExtension;
 import com.github.benmanes.gradle.versions.VersionsPlugin;
+import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Sets;
 import groovy.lang.Closure;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Nonnull;
 import nebula.plugin.info.InfoPlugin;
 import net.saliman.gradle.plugin.cobertura.CoberturaExtension;
 import net.saliman.gradle.plugin.cobertura.CoberturaPlugin;
@@ -19,7 +19,6 @@ import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.Task;
 import org.gradle.api.artifacts.maven.MavenDeployer;
 import org.gradle.api.artifacts.maven.MavenPom;
 import org.gradle.api.artifacts.maven.MavenResolver;
@@ -33,7 +32,6 @@ import org.gradle.api.tasks.testing.Test;
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat;
 import org.gradle.api.tasks.testing.logging.TestLogEvent;
 import org.gradle.api.tasks.testing.logging.TestLoggingContainer;
-import org.gradle.external.javadoc.StandardJavadocDocletOptions;
 import org.gradle.util.ConfigureUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,8 +159,8 @@ public class StdModulePlugin implements Plugin<Project> {
                                         for (License license : extension.licenses) {
                                             Object target = DefaultGroovyMethods.invokeMethod(pom, "license", null);
                                             ConfigureUtil.configureByMap(ImmutableMap.<String, Object>of(
-                                                    "name", license.getName(),
-                                                    "url", license.getUri(),
+                                                    "name", Preconditions.checkNotNull(license.getName(), "License name was null."),
+                                                    "url", Preconditions.checkNotNull(license.getUri(), "License URI was null."),
                                                     "distribution", "repo"
                                             ), target);
                                         }
@@ -176,9 +174,9 @@ public class StdModulePlugin implements Plugin<Project> {
                                         for (StdModuleExtension.Person person : extension.authors) {
                                             Object target = DefaultGroovyMethods.invokeMethod(pom, "developer", null);
                                             ConfigureUtil.configureByMap(ImmutableMap.<String, Object>of(
-                                                    "id", person.id,
-                                                    "name", person.name,
-                                                    "email", person.email
+                                                    "id", Preconditions.checkNotNull(person.id, "Person.id was null."),
+                                                    "name", Preconditions.checkNotNull(person.name, "Person.name was null."),
+                                                    "email", Preconditions.checkNotNull(person.email, "Person.email was null.")
                                             ), target);
                                             if (LOG.isDebugEnabled())
                                                 LOG.debug("Developer value is {} with props {}", target, DefaultGroovyMethods.getProperties(target));
