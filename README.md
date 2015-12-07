@@ -18,7 +18,12 @@ the following:
 It is primarily intended to ease the maintenance of my own numerous
 projects, but other people or organizations may find it useful.
 
-# Usage
+# Cheat Sheet
+
+If you are building a project which uses gradle-stdproject-plugin,
+then you should read the [CHEATSHEET](CHEATSHEET.md).
+
+# Applying to Your Own Projects
 
 Depend on the plugin like this:
 ```
