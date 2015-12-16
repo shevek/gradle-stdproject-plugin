@@ -8,13 +8,30 @@ standard commandlines.
 
 Install Java (JDK) but do not install a system-wide gradle.
 
+## Developing
+
+To compile all code and test classes (fast):
+
+	./gradlew --daemon testClasses
+
+## Testing
+
+To run a single test in module moduleName, showing output to the
+screen:
+
+	./gradlew --daemon :moduleName:test -Dtest.single=TestClassName
+
+To run all tests in module moduleName:
+
+	./gradlew --daemon :moduleName:test
+
+To run all tests:
+
+	./gradlew --daemon test
+
 ## Building and Releasing
 
-To build and test:
-
-	./gradlew --daemon build
-
-To clean build and create all reports.
+To clean build and create all reports:
 
 	./gradlew --daemon clean build coberturaReport
 
@@ -26,27 +43,13 @@ Or to install to Maven local only:
 
 	./gradlew --daemon install
 
-## Developing
+## Other useful tricks:
 
-To compile all code and test classes (fast):
-
-	./gradlew --daemon testClasses
-
-To build all artifacts without testing (medium):
+To build all artifacts without testing (faster):
 
 	./gradlew --daemon assemble
 
-## Testing
+To build the JAR file for a single module:
 
-To run all tests:
-
-	./gradlew --daemon test
-
-To run all tests in module moduleName:
-
-	./gradlew --daemon :moduleName:test
-
-To run a single test in module moduleName:
-
-	./gradlew --daemon :moduleName:test -Dtest.single=TestClassName
+	./gradlew --daemon :moduleName:jar
 
