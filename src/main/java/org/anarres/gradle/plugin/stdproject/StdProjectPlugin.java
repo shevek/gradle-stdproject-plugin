@@ -87,7 +87,7 @@ public class StdProjectPlugin implements Plugin<Project> {
         project.getPlugins().apply(ProjectReportsPlugin.class);
 
         Wrapper wrapper = (Wrapper) project.getTasks().getByName("wrapper");
-        wrapper.setGradleVersion("2.6");
+        wrapper.setGradleVersion("2.12");
 
         // Github
         project.getPlugins().apply(GithubPagesPlugin.class);

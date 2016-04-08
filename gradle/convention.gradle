@@ -1,6 +1,6 @@
 	apply plugin: 'java' // Plugin as major conventions
 	// apply plugin: 'errorprone'
-	apply plugin: 'info'
+	apply plugin: 'nebula.info'
 	apply plugin: 'com.github.ben-manes.versions'
 
 	sourceCompatibility = 1.6
@@ -71,5 +71,5 @@ apply plugin: 'project-report'
 
 // Generate wrapper, which is distributed as part of source to alleviate the need of installing gradle
 wrapper {
-	gradleVersion = '2.4'
+	gradleVersion = '2.12'
 }
