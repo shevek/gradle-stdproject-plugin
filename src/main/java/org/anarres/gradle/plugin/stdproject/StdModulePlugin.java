@@ -3,7 +3,6 @@ package org.anarres.gradle.plugin.stdproject;
 import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferExtension;
 import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferPlugin;
 import com.bmuschko.gradle.nexus.NexusPlugin;
-import com.bmuschko.gradle.nexus.NexusPluginExtension;
 import com.github.benmanes.gradle.versions.VersionsPlugin;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
@@ -119,7 +118,7 @@ public class StdModulePlugin implements Plugin<Project> {
 
         // Nexus
         project.getPlugins().apply(NexusPlugin.class);
-        final NexusPluginExtension nexus = project.getExtensions().getByType(NexusPluginExtension.class);
+        // final NexusPluginExtension nexus = project.getExtensions().getByType(NexusPluginExtension.class);
         project.afterEvaluate(new Action<Project>() {
             @Override
             public void execute(Project t) {
