@@ -34,5 +34,5 @@ dependencies {
 
 	compile 'org.anarres.jdiagnostics:jdiagnostics:1.0.2'
 
-	compile 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
+	compile 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
 }
