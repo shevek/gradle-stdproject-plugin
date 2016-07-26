@@ -42,7 +42,8 @@ public class StdProjectExtension extends GroovyObjectSupport {
                     "http://gradle.org/docs/current/javadoc/",
                     // "http://groovy.codehaus.org/api/", // obsolete
                     // "http://www.groovy-lang.org/api/",
-                    "http://docs.guava-libraries.googlecode.com/git/javadoc/"));
+                    // "http://docs.guava-libraries.googlecode.com/git/javadoc/",
+                    "https://google.github.io/guava/releases/snapshot/api/docs/"));
         }
     };
 
