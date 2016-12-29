@@ -2,10 +2,6 @@ buildscript {
     apply from: file('gradle/buildscript.gradle'), to: buildscript 
 }
 
-task buildscriptDependencies << {
-	project.buildscript.configurations.getByName('classpath').each { println it.name }
-}
-
 ext.githubProjectName = rootProject.name
 group = "org.anarres.gradle"
 
@@ -14,7 +10,8 @@ apply from: file('gradle/github.gradle')
 apply from: file('gradle/nexus.gradle')
 apply from: file('gradle/check.gradle')
 apply from: file('gradle/license.gradle')
-apply from: file('gradle/plugin.gradle')
+
+apply plugin: 'java-gradle-plugin'
 
 dependencies {
 	compile gradleApi()
@@ -35,4 +32,21 @@ dependencies {
 	compile 'org.anarres.jdiagnostics:jdiagnostics:1.0.2'
 
 	compile 'com.github.jengelman.gradle.plugins:shadow:1.2.3'
+}
+
+gradlePlugin {
+	plugins {
+		stdproject {
+			id = "org.anarres.stdproject"
+			implementationClass = "org.anarres.gradle.plugin.stdproject.StdProjectPlugin"
+		}
+		stdmodule {
+			id = "org.anarres.stdmodule"
+			implementationClass = "org.anarres.gradle.plugin.stdproject.StdModulePlugin"
+		}
+		stdplugin {
+			id = "org.anarres.stdplugin"
+			implementationClass = "org.anarres.gradle.plugin.stdproject.StdPluginPlugin"
+		}
+	}
 }
