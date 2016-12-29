@@ -83,7 +83,7 @@ For a subproject which builds a gradle plugin, also apply:
 project(':myproject-gradle') {
 	apply plugin: 'org.anarres.stdplugin'
 	stdplugin {
-		implementation "org.myorg.myplugin" "org.myorg.myplugin.MyPlugin"
+		implementation "org.myorg.myplugin", "org.myorg.myplugin.MyPlugin"
 		tags "my", "plugin", "is", "cool"
 	}
 }
