@@ -33,7 +33,8 @@
 				"http://docs.oracle.com/javaee/7/api/",
 				"http://gradle.org/docs/current/javadoc/",
 				// "http://groovy.codehaus.org/api/",
-				"http://docs.guava-libraries.googlecode.com/git/javadoc/"
+				// "http://docs.guava-libraries.googlecode.com/git/javadoc/"
+				"https://google.github.io/guava/releases/snapshot/api/docs/"
 
 		if (JavaVersion.current().isJava8Compatible())
 			options.addStringOption('Xdoclint:none', '-quiet')
