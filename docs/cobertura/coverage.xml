@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
 
-<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="347" branches-covered="0" branches-valid="74" complexity="1.7222222222222223" version="2.0.3" timestamp="1434489283901">
+<coverage line-rate="0.0" branch-rate="0.0" lines-covered="0" lines-valid="349" branches-covered="0" branches-valid="74" complexity="1.7222222222222223" version="2.0.3" timestamp="1482970647157">
 	<sources>
 		<source>/home/shevek/java/gradle-stdproject-plugin/src/main/java</source>
 	</sources>
@@ -412,7 +412,7 @@
 					<methods>
 						<method name="&lt;clinit&gt;" signature="()V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="48" hits="0" branch="false"/>
+								<line number="45" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="&lt;init&gt;" signature="()V" line-rate="1.0" branch-rate="1.0">
@@ -421,7 +421,7 @@
 						</method>
 						<method name="access$000" signature="()Lorg/slf4j/Logger;" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="46" hits="0" branch="false"/>
+								<line number="43" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="apply" signature="(Ljava/lang/Object;)V" line-rate="1.0" branch-rate="1.0">
@@ -430,37 +430,44 @@
 						</method>
 						<method name="apply" signature="(Lorg/gradle/api/Project;)V" line-rate="0.0" branch-rate="0.0">
 							<lines>
-								<line number="53" hits="0" branch="false"/>
+								<line number="50" hits="0" branch="false"/>
+								<line number="54" hits="0" branch="false"/>
 								<line number="57" hits="0" branch="false"/>
-								<line number="60" hits="0" branch="false"/>
+								<line number="58" hits="0" branch="false"/>
+								<line number="59" hits="0" branch="false"/>
 								<line number="61" hits="0" branch="false"/>
 								<line number="62" hits="0" branch="false"/>
 								<line number="64" hits="0" branch="false"/>
 								<line number="65" hits="0" branch="false"/>
 								<line number="67" hits="0" branch="false"/>
 								<line number="68" hits="0" branch="false"/>
-								<line number="70" hits="0" branch="false"/>
-								<line number="71" hits="0" branch="false"/>
-								<line number="72" hits="0" branch="false"/>
-								<line number="75" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="69" hits="0" branch="false"/>
+								<line number="72" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="73" hits="0" branch="false"/>
+								<line number="75" hits="0" branch="false"/>
 								<line number="76" hits="0" branch="false"/>
+								<line number="77" hits="0" branch="false"/>
 								<line number="78" hits="0" branch="false"/>
 								<line number="79" hits="0" branch="false"/>
 								<line number="80" hits="0" branch="false"/>
 								<line number="81" hits="0" branch="false"/>
 								<line number="82" hits="0" branch="false"/>
-								<line number="83" hits="0" branch="false"/>
-								<line number="84" hits="0" branch="false"/>
-								<line number="85" hits="0" branch="false"/>
-								<line number="86" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="83" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="84" hits="0" branch="false"/>
+								<line number="85" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="86" hits="0" branch="false"/>
 								<line number="87" hits="0" branch="false"/>
 								<line number="88" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
@@ -468,82 +475,81 @@
 									</conditions>
 								</line>
 								<line number="89" hits="0" branch="false"/>
-								<line number="90" hits="0" branch="false"/>
-								<line number="91" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="90" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="91" hits="0" branch="false"/>
 								<line number="92" hits="0" branch="false"/>
-								<line number="93" hits="0" branch="true" condition-coverage="0% (0/2)">
-									<conditions>
-										<condition number="0" type="jump" coverage="0%"/>
-									</conditions>
-								</line>
 								<line number="94" hits="0" branch="false"/>
 								<line number="95" hits="0" branch="false"/>
-								<line number="97" hits="0" branch="false"/>
-								<line number="98" hits="0" branch="false"/>
-								<line number="99" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="96" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="97" hits="0" branch="false"/>
+								<line number="98" hits="0" branch="false"/>
+								<line number="99" hits="0" branch="false"/>
 								<line number="100" hits="0" branch="false"/>
-								<line number="101" hits="0" branch="false"/>
-								<line number="102" hits="0" branch="false"/>
-								<line number="103" hits="0" branch="false"/>
+								<line number="104" hits="0" branch="false"/>
+								<line number="105" hits="0" branch="false"/>
+								<line number="106" hits="0" branch="false"/>
 								<line number="107" hits="0" branch="false"/>
-								<line number="108" hits="0" branch="false"/>
 								<line number="109" hits="0" branch="false"/>
 								<line number="110" hits="0" branch="false"/>
-								<line number="112" hits="0" branch="false"/>
-								<line number="113" hits="0" branch="false"/>
-								<line number="114" hits="0" branch="false"/>
-								<line number="118" hits="0" branch="false"/>
-								<line number="119" hits="0" branch="false"/>
+								<line number="111" hits="0" branch="false"/>
+								<line number="115" hits="0" branch="false"/>
+								<line number="116" hits="0" branch="false"/>
+								<line number="117" hits="0" branch="false"/>
 								<line number="120" hits="0" branch="false"/>
-								<line number="123" hits="0" branch="false"/>
-								<line number="124" hits="0" branch="false"/>
-								<line number="125" hits="0" branch="false"/>
-								<line number="216" hits="0" branch="false"/>
+								<line number="122" hits="0" branch="false"/>
+								<line number="213" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="46" hits="0" branch="false"/>
-						<line number="48" hits="0" branch="false"/>
-						<line number="53" hits="0" branch="false"/>
+						<line number="43" hits="0" branch="false"/>
+						<line number="45" hits="0" branch="false"/>
+						<line number="50" hits="0" branch="false"/>
+						<line number="54" hits="0" branch="false"/>
 						<line number="57" hits="0" branch="false"/>
-						<line number="60" hits="0" branch="false"/>
+						<line number="58" hits="0" branch="false"/>
+						<line number="59" hits="0" branch="false"/>
 						<line number="61" hits="0" branch="false"/>
 						<line number="62" hits="0" branch="false"/>
 						<line number="64" hits="0" branch="false"/>
 						<line number="65" hits="0" branch="false"/>
 						<line number="67" hits="0" branch="false"/>
 						<line number="68" hits="0" branch="false"/>
-						<line number="70" hits="0" branch="false"/>
-						<line number="71" hits="0" branch="false"/>
-						<line number="72" hits="0" branch="false"/>
-						<line number="75" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="69" hits="0" branch="false"/>
+						<line number="72" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="73" hits="0" branch="false"/>
+						<line number="75" hits="0" branch="false"/>
 						<line number="76" hits="0" branch="false"/>
+						<line number="77" hits="0" branch="false"/>
 						<line number="78" hits="0" branch="false"/>
 						<line number="79" hits="0" branch="false"/>
 						<line number="80" hits="0" branch="false"/>
 						<line number="81" hits="0" branch="false"/>
 						<line number="82" hits="0" branch="false"/>
-						<line number="83" hits="0" branch="false"/>
-						<line number="84" hits="0" branch="false"/>
-						<line number="85" hits="0" branch="false"/>
-						<line number="86" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="83" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="84" hits="0" branch="false"/>
+						<line number="85" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="86" hits="0" branch="false"/>
 						<line number="87" hits="0" branch="false"/>
 						<line number="88" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
@@ -551,45 +557,37 @@
 							</conditions>
 						</line>
 						<line number="89" hits="0" branch="false"/>
-						<line number="90" hits="0" branch="false"/>
-						<line number="91" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="90" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="91" hits="0" branch="false"/>
 						<line number="92" hits="0" branch="false"/>
-						<line number="93" hits="0" branch="true" condition-coverage="0% (0/2)">
-							<conditions>
-								<condition number="0" type="jump" coverage="0%"/>
-							</conditions>
-						</line>
 						<line number="94" hits="0" branch="false"/>
 						<line number="95" hits="0" branch="false"/>
-						<line number="97" hits="0" branch="false"/>
-						<line number="98" hits="0" branch="false"/>
-						<line number="99" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="96" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="97" hits="0" branch="false"/>
+						<line number="98" hits="0" branch="false"/>
+						<line number="99" hits="0" branch="false"/>
 						<line number="100" hits="0" branch="false"/>
-						<line number="101" hits="0" branch="false"/>
-						<line number="102" hits="0" branch="false"/>
-						<line number="103" hits="0" branch="false"/>
+						<line number="104" hits="0" branch="false"/>
+						<line number="105" hits="0" branch="false"/>
+						<line number="106" hits="0" branch="false"/>
 						<line number="107" hits="0" branch="false"/>
-						<line number="108" hits="0" branch="false"/>
 						<line number="109" hits="0" branch="false"/>
 						<line number="110" hits="0" branch="false"/>
-						<line number="112" hits="0" branch="false"/>
-						<line number="113" hits="0" branch="false"/>
-						<line number="114" hits="0" branch="false"/>
-						<line number="118" hits="0" branch="false"/>
-						<line number="119" hits="0" branch="false"/>
+						<line number="111" hits="0" branch="false"/>
+						<line number="115" hits="0" branch="false"/>
+						<line number="116" hits="0" branch="false"/>
+						<line number="117" hits="0" branch="false"/>
 						<line number="120" hits="0" branch="false"/>
-						<line number="123" hits="0" branch="false"/>
-						<line number="124" hits="0" branch="false"/>
-						<line number="125" hits="0" branch="false"/>
-						<line number="216" hits="0" branch="false"/>
+						<line number="122" hits="0" branch="false"/>
+						<line number="213" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdModulePlugin$1" filename="org/anarres/gradle/plugin/stdproject/StdModulePlugin.java" line-rate="0.0" branch-rate="0.0" complexity="3.4">
@@ -600,184 +598,190 @@
 						</method>
 						<method name="execute" signature="(Ljava/lang/Object;)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="125" hits="0" branch="false"/>
+								<line number="122" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="execute" signature="(Lorg/gradle/api/Project;)V" line-rate="0.0" branch-rate="0.0">
 							<lines>
-								<line number="129" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="126" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="127" hits="0" branch="true" condition-coverage="0% (0/2)">
+									<conditions>
+										<condition number="0" type="jump" coverage="0%"/>
+									</conditions>
+								</line>
+								<line number="128" hits="0" branch="false"/>
 								<line number="130" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
 								<line number="131" hits="0" branch="false"/>
-								<line number="133" hits="0" branch="true" condition-coverage="0% (0/2)">
-									<conditions>
-										<condition number="0" type="jump" coverage="0%"/>
-									</conditions>
-								</line>
-								<line number="134" hits="0" branch="false"/>
-								<line number="150" hits="0" branch="false"/>
+								<line number="147" hits="0" branch="false"/>
+								<line number="192" hits="0" branch="false"/>
+								<line number="193" hits="0" branch="false"/>
+								<line number="194" hits="0" branch="false"/>
 								<line number="195" hits="0" branch="false"/>
 								<line number="196" hits="0" branch="false"/>
 								<line number="197" hits="0" branch="false"/>
-								<line number="198" hits="0" branch="false"/>
-								<line number="199" hits="0" branch="false"/>
-								<line number="200" hits="0" branch="false"/>
-								<line number="205" hits="0" branch="false"/>
+								<line number="202" hits="0" branch="false"/>
+								<line number="206" hits="0" branch="false"/>
+								<line number="207" hits="0" branch="false"/>
+								<line number="208" hits="0" branch="false"/>
 								<line number="209" hits="0" branch="false"/>
-								<line number="210" hits="0" branch="false"/>
 								<line number="211" hits="0" branch="false"/>
-								<line number="212" hits="0" branch="false"/>
-								<line number="214" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="125" hits="0" branch="false"/>
-						<line number="129" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="122" hits="0" branch="false"/>
+						<line number="126" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="127" hits="0" branch="true" condition-coverage="0% (0/2)">
+							<conditions>
+								<condition number="0" type="jump" coverage="0%"/>
+							</conditions>
+						</line>
+						<line number="128" hits="0" branch="false"/>
 						<line number="130" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
 						<line number="131" hits="0" branch="false"/>
-						<line number="133" hits="0" branch="true" condition-coverage="0% (0/2)">
-							<conditions>
-								<condition number="0" type="jump" coverage="0%"/>
-							</conditions>
-						</line>
-						<line number="134" hits="0" branch="false"/>
-						<line number="150" hits="0" branch="false"/>
+						<line number="147" hits="0" branch="false"/>
+						<line number="192" hits="0" branch="false"/>
+						<line number="193" hits="0" branch="false"/>
+						<line number="194" hits="0" branch="false"/>
 						<line number="195" hits="0" branch="false"/>
 						<line number="196" hits="0" branch="false"/>
 						<line number="197" hits="0" branch="false"/>
-						<line number="198" hits="0" branch="false"/>
-						<line number="199" hits="0" branch="false"/>
-						<line number="200" hits="0" branch="false"/>
-						<line number="205" hits="0" branch="false"/>
+						<line number="202" hits="0" branch="false"/>
+						<line number="206" hits="0" branch="false"/>
+						<line number="207" hits="0" branch="false"/>
+						<line number="208" hits="0" branch="false"/>
 						<line number="209" hits="0" branch="false"/>
-						<line number="210" hits="0" branch="false"/>
 						<line number="211" hits="0" branch="false"/>
-						<line number="212" hits="0" branch="false"/>
-						<line number="214" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdModulePlugin$1$1" filename="org/anarres/gradle/plugin/stdproject/StdModulePlugin.java" line-rate="0.0" branch-rate="1.0" complexity="3.4">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Lorg/anarres/gradle/plugin/stdproject/StdModulePlugin$1;Ljava/lang/Object;)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="150" hits="0" branch="false"/>
+								<line number="147" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="call" signature="([Ljava/lang/Object;)Ljava/lang/Object;" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="153" hits="0" branch="false"/>
-								<line number="155" hits="0" branch="false"/>
-								<line number="173" hits="0" branch="false"/>
-								<line number="190" hits="0" branch="false"/>
+								<line number="150" hits="0" branch="false"/>
+								<line number="152" hits="0" branch="false"/>
+								<line number="170" hits="0" branch="false"/>
+								<line number="187" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
+						<line number="147" hits="0" branch="false"/>
 						<line number="150" hits="0" branch="false"/>
-						<line number="153" hits="0" branch="false"/>
-						<line number="155" hits="0" branch="false"/>
-						<line number="173" hits="0" branch="false"/>
-						<line number="190" hits="0" branch="false"/>
+						<line number="152" hits="0" branch="false"/>
+						<line number="170" hits="0" branch="false"/>
+						<line number="187" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdModulePlugin$1$1$1" filename="org/anarres/gradle/plugin/stdproject/StdModulePlugin.java" line-rate="0.0" branch-rate="0.0" complexity="3.4">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Lorg/anarres/gradle/plugin/stdproject/StdModulePlugin$1$1;Ljava/lang/Object;Ljava/lang/Object;)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="155" hits="0" branch="false"/>
+								<line number="152" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="call" signature="([Ljava/lang/Object;)Ljava/lang/Object;" line-rate="0.0" branch-rate="0.0">
 							<lines>
-								<line number="161" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="158" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="159" hits="0" branch="false"/>
+								<line number="160" hits="0" branch="false"/>
+								<line number="161" hits="0" branch="false"/>
 								<line number="162" hits="0" branch="false"/>
-								<line number="163" hits="0" branch="false"/>
-								<line number="164" hits="0" branch="false"/>
 								<line number="165" hits="0" branch="false"/>
-								<line number="168" hits="0" branch="false"/>
-								<line number="169" hits="0" branch="false"/>
+								<line number="166" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="155" hits="0" branch="false"/>
-						<line number="161" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="152" hits="0" branch="false"/>
+						<line number="158" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="159" hits="0" branch="false"/>
+						<line number="160" hits="0" branch="false"/>
+						<line number="161" hits="0" branch="false"/>
 						<line number="162" hits="0" branch="false"/>
-						<line number="163" hits="0" branch="false"/>
-						<line number="164" hits="0" branch="false"/>
 						<line number="165" hits="0" branch="false"/>
-						<line number="168" hits="0" branch="false"/>
-						<line number="169" hits="0" branch="false"/>
+						<line number="166" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdModulePlugin$1$1$2" filename="org/anarres/gradle/plugin/stdproject/StdModulePlugin.java" line-rate="0.0" branch-rate="0.0" complexity="3.4">
 					<methods>
 						<method name="&lt;init&gt;" signature="(Lorg/anarres/gradle/plugin/stdproject/StdModulePlugin$1$1;Ljava/lang/Object;Ljava/lang/Object;)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="173" hits="0" branch="false"/>
+								<line number="170" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="call" signature="([Ljava/lang/Object;)Ljava/lang/Object;" line-rate="0.0" branch-rate="0.0">
 							<lines>
-								<line number="176" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="173" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
+								<line number="174" hits="0" branch="false"/>
+								<line number="175" hits="0" branch="false"/>
+								<line number="176" hits="0" branch="false"/>
 								<line number="177" hits="0" branch="false"/>
 								<line number="178" hits="0" branch="false"/>
-								<line number="183" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="180" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
-								<line number="184" hits="0" branch="false"/>
-								<line number="185" hits="0" branch="false"/>
-								<line number="186" hits="0" branch="false"/>
+								<line number="181" hits="0" branch="false"/>
+								<line number="182" hits="0" branch="false"/>
+								<line number="183" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
-						<line number="173" hits="0" branch="false"/>
-						<line number="176" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="170" hits="0" branch="false"/>
+						<line number="173" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
+						<line number="174" hits="0" branch="false"/>
+						<line number="175" hits="0" branch="false"/>
+						<line number="176" hits="0" branch="false"/>
 						<line number="177" hits="0" branch="false"/>
 						<line number="178" hits="0" branch="false"/>
-						<line number="183" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="180" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
-						<line number="184" hits="0" branch="false"/>
-						<line number="185" hits="0" branch="false"/>
-						<line number="186" hits="0" branch="false"/>
+						<line number="181" hits="0" branch="false"/>
+						<line number="182" hits="0" branch="false"/>
+						<line number="183" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdPluginExtension" filename="org/anarres/gradle/plugin/stdproject/StdPluginExtension.java" line-rate="0.0" branch-rate="0.0" complexity="1.25">
@@ -970,8 +974,8 @@
 								<line number="23" hits="0" branch="false"/>
 								<line number="25" hits="0" branch="false"/>
 								<line number="37" hits="0" branch="false"/>
-								<line number="53" hits="0" branch="false"/>
-								<line number="59" hits="0" branch="false"/>
+								<line number="54" hits="0" branch="false"/>
+								<line number="60" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="javadocGroup" signature="(Ljava/lang/String;[Ljava/lang/String;)V" line-rate="0.0" branch-rate="0.0">
@@ -990,25 +994,25 @@
 						</method>
 						<method name="javadocLink" signature="([Ljava/lang/Object;)V" line-rate="0.0" branch-rate="0.0">
 							<lines>
-								<line number="50" hits="0" branch="true" condition-coverage="0% (0/2)">
+								<line number="51" hits="0" branch="true" condition-coverage="0% (0/2)">
 									<conditions>
 										<condition number="0" type="jump" coverage="0%"/>
 									</conditions>
 								</line>
-								<line number="51" hits="0" branch="false"/>
 								<line number="52" hits="0" branch="false"/>
+								<line number="53" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="javadocLinkSource" signature="(Z)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="56" hits="0" branch="false"/>
 								<line number="57" hits="0" branch="false"/>
+								<line number="58" hits="0" branch="false"/>
 							</lines>
 						</method>
 						<method name="javadocQuiet" signature="(Z)V" line-rate="0.0" branch-rate="1.0">
 							<lines>
-								<line number="62" hits="0" branch="false"/>
 								<line number="63" hits="0" branch="false"/>
+								<line number="64" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
@@ -1027,19 +1031,19 @@
 						<line number="33" hits="0" branch="false"/>
 						<line number="34" hits="0" branch="false"/>
 						<line number="37" hits="0" branch="false"/>
-						<line number="50" hits="0" branch="true" condition-coverage="0% (0/2)">
+						<line number="51" hits="0" branch="true" condition-coverage="0% (0/2)">
 							<conditions>
 								<condition number="0" type="jump" coverage="0%"/>
 							</conditions>
 						</line>
-						<line number="51" hits="0" branch="false"/>
 						<line number="52" hits="0" branch="false"/>
 						<line number="53" hits="0" branch="false"/>
-						<line number="56" hits="0" branch="false"/>
+						<line number="54" hits="0" branch="false"/>
 						<line number="57" hits="0" branch="false"/>
-						<line number="59" hits="0" branch="false"/>
-						<line number="62" hits="0" branch="false"/>
+						<line number="58" hits="0" branch="false"/>
+						<line number="60" hits="0" branch="false"/>
 						<line number="63" hits="0" branch="false"/>
+						<line number="64" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdProjectExtension$1" filename="org/anarres/gradle/plugin/stdproject/StdProjectExtension.java" line-rate="0.0" branch-rate="1.0" complexity="1.4">
@@ -1048,14 +1052,14 @@
 							<lines>
 								<line number="37" hits="0" branch="false"/>
 								<line number="39" hits="0" branch="false"/>
-								<line number="46" hits="0" branch="false"/>
+								<line number="47" hits="0" branch="false"/>
 							</lines>
 						</method>
 					</methods>
 					<lines>
 						<line number="37" hits="0" branch="false"/>
 						<line number="39" hits="0" branch="false"/>
-						<line number="46" hits="0" branch="false"/>
+						<line number="47" hits="0" branch="false"/>
 					</lines>
 				</class>
 				<class name="org.anarres.gradle.plugin.stdproject.StdProjectPlugin" filename="org/anarres/gradle/plugin/stdproject/StdProjectPlugin.java" line-rate="0.0" branch-rate="0.0" complexity="2.625">
