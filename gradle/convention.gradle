@@ -72,5 +72,5 @@ apply plugin: 'project-report'
 
 // Generate wrapper, which is distributed as part of source to alleviate the need of installing gradle
 wrapper {
-	gradleVersion = '2.12'
+	gradleVersion = '3.2.1'
 }
