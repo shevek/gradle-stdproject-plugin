@@ -35,6 +35,7 @@ public class StdPluginPlugin implements Plugin<Project> {
         // Gradle
         project.getRepositories().add(project.getRepositories().jcenter());
         project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());
+        project.getDependencies().add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleTestKit());
 
         // Maven
         project.getPlugins().apply(MavenPublishPlugin.class);
