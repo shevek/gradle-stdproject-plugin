@@ -28,6 +28,8 @@ public class StdPluginPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
+        project.getPlugins().apply(StdModulePlugin.class);
+
         final StdPluginExtension extension = project.getExtensions().create("stdplugin", StdPluginExtension.class, project);
 
         // Gradle
