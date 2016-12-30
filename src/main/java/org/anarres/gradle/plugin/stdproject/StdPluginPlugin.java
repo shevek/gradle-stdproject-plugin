@@ -5,8 +5,6 @@
  */
 package org.anarres.gradle.plugin.stdproject;
 
-import com.jfrog.bintray.gradle.BintrayExtension;
-import com.jfrog.bintray.gradle.BintrayPlugin;
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
@@ -15,10 +13,10 @@ import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.Task;
-import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
 import org.gradle.api.tasks.SourceSetContainer;
+import org.gradle.plugin.devel.plugins.JavaGradlePluginPlugin;
 
 /**
  *
@@ -33,24 +31,26 @@ public class StdPluginPlugin implements Plugin<Project> {
         final StdPluginExtension extension = project.getExtensions().create("stdplugin", StdPluginExtension.class, project);
 
         // Gradle
+        project.getPlugins().apply(JavaGradlePluginPlugin.class);
         project.getRepositories().add(project.getRepositories().jcenter());
-        project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());
-        project.getDependencies().add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleTestKit());
+        // project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());
+        // project.getDependencies().add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleTestKit());
 
         // Maven
         project.getPlugins().apply(MavenPublishPlugin.class);
 
         // Bintray
-        project.getPlugins().apply(BintrayPlugin.class);
-        BintrayExtension bintray = project.getExtensions().getByType(BintrayExtension.class);
-        String bintrayUsername = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayUsername");
-        if (bintrayUsername != null)
-            bintray.setUser(bintrayUsername);
-        String bintrayApiKey = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayApiKey");
-        if (bintrayApiKey != null)
-            bintray.setKey(bintrayApiKey);
-        bintray.getPkg().setRepo("gradle-plugins");
-
+        /*
+         project.getPlugins().apply(BintrayPlugin.class);
+         BintrayExtension bintray = project.getExtensions().getByType(BintrayExtension.class);
+         String bintrayUsername = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayUsername");
+         if (bintrayUsername != null)
+         bintray.setUser(bintrayUsername);
+         String bintrayApiKey = StdProjectPlugin.getExtraPropertyOrNull(project.getRootProject(), "bintrayApiKey");
+         if (bintrayApiKey != null)
+         bintray.setKey(bintrayApiKey);
+         bintray.getPkg().setRepo("gradle-plugins");
+         */
         // Plugin
         final File pluginDescriptorDir = new File(project.getBuildDir(), "generated-resources/gradle-plugin");
         Task generatePluginDescriptors = project.getTasks().create("generatePluginDescriptors", GeneratePluginDescriptors.class, new Action<GeneratePluginDescriptors>() {
