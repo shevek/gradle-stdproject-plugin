@@ -1,14 +1,14 @@
 buildscript {
 	// Executed in context of buildscript
 	repositories {
-		mavenLocal()
+		// mavenLocal()
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 		mavenCentral()
 		jcenter()
 	}
 
 	dependencies {
-		classpath "org.anarres.gradle:gradle-stdproject-plugin:1.0.9-SNAPSHOT"
+		classpath "org.anarres.gradle:gradle-stdproject-plugin:1.0.9"
 	}
 }
 
