@@ -1,18 +1,13 @@
 package org.anarres.gradle.plugin.stdproject;
 
-import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferExtension;
-import be.insaneprogramming.gradle.animalsniffer.AnimalSnifferPlugin;
 import com.bmuschko.gradle.nexus.NexusPlugin;
 import com.github.benmanes.gradle.versions.VersionsPlugin;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
 import groovy.lang.Closure;
 import java.util.HashMap;
 import java.util.Map;
 import nebula.plugin.info.InfoPlugin;
-import net.saliman.gradle.plugin.cobertura.CoberturaExtension;
-import net.saliman.gradle.plugin.cobertura.CoberturaPlugin;
 import org.codehaus.groovy.runtime.DefaultGroovyMethods;
 import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
@@ -106,16 +101,14 @@ public class StdModulePlugin implements Plugin<Project> {
         findbugs.setIgnoreFailures(true);   // Hope the plugin set this property as a convention.
         project.getTasks().getByName("findbugsTest").setEnabled(false);
 
-        project.getPlugins().apply(CoberturaPlugin.class);
-        CoberturaExtension cobertura = project.getExtensions().getByType(CoberturaExtension.class);
-        cobertura.setCoverageFormats(Sets.newHashSet("html", "xml"));
+        // project.getPlugins().apply(CoberturaPlugin.class);
+        // CoberturaExtension cobertura = project.getExtensions().getByType(CoberturaExtension.class);
+        // cobertura.setCoverageFormats(Sets.newHashSet("html", "xml"));
         // https://github.com/stevesaliman/gradle-cobertura-plugin/issues/81
         // cobertura.setCoberturaVersion("2.1.1");
-
-        project.getPlugins().apply(AnimalSnifferPlugin.class);
-        AnimalSnifferExtension animalSniffer = project.getExtensions().getByType(AnimalSnifferExtension.class);
-        animalSniffer.setSignature("org.codehaus.mojo.signature:java17:+@signature");
-
+        // project.getPlugins().apply(AnimalSnifferPlugin.class);
+        // AnimalSnifferExtension animalSniffer = project.getExtensions().getByType(AnimalSnifferExtension.class);
+        // animalSniffer.setSignature("org.codehaus.mojo.signature:java17:+@signature");
         // Nexus
         project.getPlugins().apply(NexusPlugin.class);
         // final NexusPluginExtension nexus = project.getExtensions().getByType(NexusPluginExtension.class);
@@ -124,8 +117,9 @@ public class StdModulePlugin implements Plugin<Project> {
             public void execute(Project t) {
 
                 for (Upload upload : project.getTasks().withType(Upload.class)) {
-                    for (MavenDeployer deployer : upload.getRepositories().withType(MavenDeployer.class))
-                        deployer.setUniqueVersion(false);
+                    // This was only relevant for Maven 2, and is enforced true for Maven 3.
+                    // for (MavenDeployer deployer : upload.getRepositories().withType(MavenDeployer.class))
+                    // deployer.setUniqueVersion(false);
 
                     for (MavenResolver resolver : upload.getRepositories().withType(MavenResolver.class)) {
                         MavenPom pom = resolver.getPom();

@@ -9,15 +9,13 @@ import java.util.concurrent.Callable;
 import javax.annotation.Nonnull;
 import nl.javadude.gradle.plugins.license.LicenseExtension;
 import nl.javadude.gradle.plugins.license.LicensePlugin;
-import org.ajoberstar.gradle.git.ghpages.GithubPagesPlugin;
-import org.ajoberstar.gradle.git.ghpages.GithubPagesPluginExtension;
+import org.ajoberstar.gradle.git.publish.GitPublishExtension;
+import org.ajoberstar.gradle.git.publish.GitPublishPlugin;
 import org.gradle.api.Action;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.Task;
 import org.gradle.api.file.CopySpec;
 import org.gradle.api.file.FileCollection;
-import org.gradle.api.file.FileCopyDetails;
 import org.gradle.api.file.FileTree;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPlugin;
@@ -25,6 +23,7 @@ import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.ProjectReportsPlugin;
 import org.gradle.api.plugins.announce.BuildAnnouncementsPlugin;
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin;
+import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.SourceTask;
 import org.gradle.api.tasks.javadoc.Groovydoc;
@@ -90,12 +89,12 @@ public class StdProjectPlugin implements Plugin<Project> {
         wrapper.setGradleVersion("3.4.1");
 
         // Github
-        project.getPlugins().apply(GithubPagesPlugin.class);
+        project.getPlugins().apply(GitPublishPlugin.class);
         // Task githubPagesTask = project.getTasks().getByName(GithubPagesPlugin.getPUBLISH_TASK_NAME());
 
-        final GithubPagesPluginExtension github = project.getExtensions().getByType(GithubPagesPluginExtension.class);
-        github.setRepoUri("git@github.com:" + getGithubPath(project) + ".git");
-        final Task githubTask = project.getTasks().getByName("publishGhPages");
+        GitPublishExtension github = project.getExtensions().getByType(GitPublishExtension.class);
+        github.getRepoUri().set("git@github.com:" + getGithubPath(project) + ".git");
+        final Copy gitPublishCopyTask = (Copy) project.getTasks().getByName("gitPublishCopy");
 
         // Github - aggregate documentation
         for (final Class<? extends SourceTask> docTaskClass : Arrays.asList(Javadoc.class, ScalaDoc.class, Groovydoc.class)) {
@@ -160,7 +159,7 @@ public class StdProjectPlugin implements Plugin<Project> {
             });
 
             // This should work but doesn't because of https://github.com/ajoberstar/gradle-git/issues/113
-            github.getPages().from(docAggregateTask, new Closure<Void>(StdProjectPlugin.this) {
+            gitPublishCopyTask.from(docAggregateTask, new Closure<Void>(StdProjectPlugin.this) {
             // github.getPages().from(docAggregateTask.getOutputs().getFiles(), new Closure<Void>(StdProjectPlugin.this) {
                 @Override
                 public Void call(Object... args) {
