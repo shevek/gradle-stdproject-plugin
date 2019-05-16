@@ -13,7 +13,6 @@ import org.gradle.api.Action;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
-import org.gradle.api.artifacts.maven.MavenDeployer;
 import org.gradle.api.artifacts.maven.MavenPom;
 import org.gradle.api.artifacts.maven.MavenResolver;
 import org.gradle.api.plugins.JavaPlugin;
@@ -109,6 +108,9 @@ public class StdModulePlugin implements Plugin<Project> {
         // project.getPlugins().apply(AnimalSnifferPlugin.class);
         // AnimalSnifferExtension animalSniffer = project.getExtensions().getByType(AnimalSnifferExtension.class);
         // animalSniffer.setSignature("org.codehaus.mojo.signature:java17:+@signature");
+        // Publishing
+        // project.getPlugins().apply(MavenPublishPlugin.class);
+
         // Nexus
         project.getPlugins().apply(NexusPlugin.class);
         // final NexusPluginExtension nexus = project.getExtensions().getByType(NexusPluginExtension.class);

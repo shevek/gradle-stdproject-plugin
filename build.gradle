@@ -1,37 +1,26 @@
 buildscript {
 	// Executed in context of buildscript
 	repositories {
-		// mavenLocal()
+		mavenLocal()
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 		mavenCentral()
 		jcenter()
 	}
 
 	dependencies {
-		classpath "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
-		// classpath 'com.mapvine:gradle-cobertura-plugin:0.1'
-		// classpath 'net.saliman:gradle-cobertura-plugin:2.4.0'
-		// classpath 'gradle-release:gradle-release:1.1.5'
-		classpath 'org.ajoberstar:gradle-git-publish:2.0.0'
-		// classpath 'net.ltgt.gradle:gradle-errorprone-plugin:0.0.5'
-		classpath('com.netflix.nebula:gradle-info-plugin:5.0.0') {
-			exclude group: 'com.perforce'
-		}
-		// classpath 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-		// classpath 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
+		classpath "org.anarres.gradle:gradle-stdproject-plugin:1.0.9-SNAPSHOT"
 	}
 }
 
-ext.githubProjectName = rootProject.name
 group = "org.anarres.gradle"
 
-apply from: file('gradle/convention.gradle')
+// apply from: file('gradle/convention.gradle')
 // apply from: file('gradle/github.gradle')
 // apply from: file('gradle/nexus.gradle')
 // apply from: file('gradle/check.gradle')
-apply from: file('gradle/license.gradle')
+// apply from: file('gradle/license.gradle')
 
+apply plugin: 'org.anarres.stdmodule'
 apply plugin: 'java-gradle-plugin'
 
 dependencies {
@@ -67,3 +56,4 @@ gradlePlugin {
 		}
 	}
 }
+

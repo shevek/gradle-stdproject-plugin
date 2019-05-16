@@ -66,8 +66,8 @@
 		}
 	}
 
-apply plugin: 'build-announcements'
-apply plugin: 'build-dashboard'
+// apply plugin: 'build-announcements'
+// apply plugin: 'build-dashboard'
 apply plugin: 'project-report'
 
 // Generate wrapper, which is distributed as part of source to alleviate the need of installing gradle
