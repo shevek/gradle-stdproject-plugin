@@ -23,6 +23,12 @@ group = "org.anarres.gradle"
 apply plugin: 'org.anarres.stdmodule'
 apply plugin: 'java-gradle-plugin'
 
+stdmodule {
+	description "An opinionated Gradle plugin for building Java projects."
+	author id: 'shevek', name: 'Shevek', email: 'github@anarres.org'
+	license 'Apache-2.0'
+}
+
 dependencies {
 	compile gradleApi()
 	compile "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
