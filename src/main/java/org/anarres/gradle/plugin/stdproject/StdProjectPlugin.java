@@ -21,7 +21,6 @@ import org.gradle.api.plugins.ExtraPropertiesExtension;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.ProjectReportsPlugin;
-import org.gradle.api.plugins.announce.BuildAnnouncementsPlugin;
 import org.gradle.api.reporting.plugins.BuildDashboardPlugin;
 import org.gradle.api.tasks.Copy;
 import org.gradle.api.tasks.SourceSetContainer;
@@ -81,12 +80,12 @@ public class StdProjectPlugin implements Plugin<Project> {
         final StdProjectExtension extension = project.getExtensions().create("stdproject", StdProjectExtension.class, project);
 
         // Convention
-        project.getPlugins().apply(BuildAnnouncementsPlugin.class);
+        // project.getPlugins().apply(BuildAnnouncementsPlugin.class);
         project.getPlugins().apply(BuildDashboardPlugin.class);
         project.getPlugins().apply(ProjectReportsPlugin.class);
 
         Wrapper wrapper = (Wrapper) project.getTasks().getByName("wrapper");
-        wrapper.setGradleVersion("4.10.3");
+        wrapper.setGradleVersion("5.6");
 
         // Github
         project.getPlugins().apply(GitPublishPlugin.class);

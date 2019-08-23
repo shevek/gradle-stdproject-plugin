@@ -5,6 +5,7 @@ buildscript {
 		// maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 		mavenCentral()
 		jcenter()
+		maven { url "https://plugins.gradle.org/m2/" }
 	}
 
 	dependencies {
@@ -29,21 +30,29 @@ stdmodule {
 	license 'Apache-2.0'
 }
 
+repositories {
+	maven { url "https://plugins.gradle.org/m2/" }
+}
+
 dependencies {
-	compile gradleApi()
-	compile "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
-	compile 'org.ajoberstar:gradle-git-publish:2.1.1'
-	compile('com.netflix.nebula:gradle-info-plugin:5.0.1') {
-		exclude group: 'com.perforce'
-	}
-	compile 'com.bmuschko:gradle-nexus-plugin:2.3.1'
-	// compile 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
-	compile 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
+	implementation gradleApi()
+	implementation localGroovy()
 
 	implementation 'org.anarres.jdiagnostics:jdiagnostics:1.0.5'
 	implementation 'com.google.guava:guava:27.1-jre'
 
-	// compile 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
+	compile "nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0"
+	compile 'org.ajoberstar:gradle-git-publish:2.1.1'
+	compile('com.netflix.nebula:gradle-info-plugin:5.0.3') {
+		exclude group: 'com.perforce'
+	}
+	compile 'com.bmuschko:gradle-nexus-plugin:2.3.1'
+	// implementation 'ru.vyarus:gradle-animalsniffer-plugin:1.5.0'
+	compile 'com.github.ben-manes:gradle-versions-plugin:0.22.0'
+
+	compile 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:2.0.0'
+
+	// implementation 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
 }
 
 gradlePlugin {

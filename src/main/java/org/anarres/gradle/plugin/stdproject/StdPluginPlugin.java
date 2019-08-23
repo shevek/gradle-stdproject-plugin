@@ -32,7 +32,7 @@ public class StdPluginPlugin implements Plugin<Project> {
 
         // Gradle
         project.getPlugins().apply(JavaGradlePluginPlugin.class);
-        project.getRepositories().add(project.getRepositories().jcenter());
+        project.getRepositories().add(project.getRepositories().gradlePluginPortal());
         // project.getDependencies().add(JavaPlugin.COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleApi());
         // project.getDependencies().add(JavaPlugin.TEST_COMPILE_CONFIGURATION_NAME, project.getDependencies().gradleTestKit());
 

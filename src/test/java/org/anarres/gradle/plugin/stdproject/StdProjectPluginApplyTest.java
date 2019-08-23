@@ -39,7 +39,8 @@ public class StdProjectPluginApplyTest {
                 // A("3.0"),
                 // A("3.2.1"),
                 A("4.10.3"),
-                A("5.4.1")
+                A("5.4.1"),
+                A("5.6")
         );
     }
 

@@ -2,6 +2,8 @@ package org.anarres.gradle.plugin.stdproject;
 
 import com.bmuschko.gradle.nexus.NexusPlugin;
 import com.github.benmanes.gradle.versions.VersionsPlugin;
+import com.github.spotbugs.SpotBugsExtension;
+import com.github.spotbugs.SpotBugsPlugin;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import groovy.lang.Closure;
@@ -17,8 +19,6 @@ import org.gradle.api.artifacts.maven.MavenPom;
 import org.gradle.api.artifacts.maven.MavenResolver;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginConvention;
-import org.gradle.api.plugins.quality.FindBugsExtension;
-import org.gradle.api.plugins.quality.FindBugsPlugin;
 import org.gradle.api.tasks.Upload;
 import org.gradle.api.tasks.javadoc.Javadoc;
 import org.gradle.api.tasks.testing.Test;
@@ -95,10 +95,10 @@ public class StdModulePlugin implements Plugin<Project> {
         }
 
         // Check
-        project.getPlugins().apply(FindBugsPlugin.class);
-        FindBugsExtension findbugs = project.getExtensions().getByType(FindBugsExtension.class);
-        findbugs.setIgnoreFailures(true);   // Hope the plugin set this property as a convention.
-        project.getTasks().getByName("findbugsTest").setEnabled(false);
+        project.getPlugins().apply(SpotBugsPlugin.class);
+        SpotBugsExtension spotbugs = project.getExtensions().getByType(SpotBugsExtension.class);
+        spotbugs.setIgnoreFailures(true);
+        project.getTasks().getByName("spotbugsTest").setEnabled(false);
 
         // project.getPlugins().apply(CoberturaPlugin.class);
         // CoberturaExtension cobertura = project.getExtensions().getByType(CoberturaExtension.class);
